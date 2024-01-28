@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand+SC&family=Pixelify+Sans&family=Press+Start+2P&family=Quicksand:wght@300&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    @font-face {
+        font-family: 'dearsanta';
+        src: url("./assets/fonts/MTFDearSanta.ttf") format(truetype);
+    }
+}
+
+
+ /* * {
+    outline : 1px solid red;
+
+}  */
