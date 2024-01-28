@@ -61,6 +61,17 @@ const seed = async () => {
         )
       );
     }
+    for (let i = 0; i < 5; i += 1) {
+      queries.push(
+        database.query(
+          `INSERT INTO orders (user_id, product_id) VALUES (? , ?)`,
+          [
+            faker.number.int({ min: 1, max: 4 }),
+            faker.number.int({ min: 1, max: 10 }),
+          ]
+        )
+      );
+    }
     /* ************************************************************************* */
 
     // Wait for all the insertion queries to complete

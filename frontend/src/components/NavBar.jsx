@@ -11,21 +11,26 @@ export default function NavBar() {
     },
     {
       id: 2,
-      path: "/fabricants",
+      path: "/produits/fabricants",
       title: "fabricants",
     },
     {
       id: 3,
-      path: "/listenoel",
+      path: "/produits/listenoel",
       title: "N liste du pere noel N",
     },
     {
       id: 4,
+      path: "/produits/commandes",
+      title: "N commandes N",
+    },
+    {
+      id: 5,
       path: "/user/inscription",
       title: "inscription",
     },
     {
-      id: 5,
+      id: 6,
       path: "/user/connexion",
       title: "connexion",
     },

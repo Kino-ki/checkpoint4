@@ -1,16 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import axios from "axios";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import App from "./App";
 import HomePage from "./pages/HomePage";
-import ProductsPage from "./pages/ProductsPage";
+import ProductsPage from "./pages/products/ProductsPage";
 import ManufacturersPage from "./pages/ManufacturersPage";
-import SantaListPage from "./pages/SantaListPage";
+import SantaListPage from "./pages/products/SantaListPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import SignUpPage from "./pages/user/SignUpPage";
 import LoginPage from "./pages/user/LogInPage";
+import OrdersPage from "./pages/products/OrdersPage";
 
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -24,18 +26,32 @@ const router = createBrowserRouter([
       },
       {
         path: "/produits",
-        element: <ProductsPage />,
-        loader: () => fetch(`${apiUrl}/api/products/`),
-      },
-      {
-        path: "/fabricants",
-        element: <ManufacturersPage />,
-        loader: () => fetch(`${apiUrl}/api/manufacturers/`),
-      },
-      {
-        path: "/listenoel",
-        element: <SantaListPage />,
-        loader: () => fetch(`${apiUrl}/api/products/`),
+        children: [
+          {
+            path: "",
+            element: <ProductsPage />,
+            loader: () =>
+              axios.get(`${apiUrl}/api/products/`).then((res) => res.data),
+          },
+          {
+            path: "listenoel",
+            element: <SantaListPage />,
+            loader: () =>
+              axios.get(`${apiUrl}/api/carts/`).then((res) => res.data),
+          },
+          {
+            path: "commandes",
+            element: <OrdersPage />,
+            loader: () =>
+              axios.get(`${apiUrl}/api/orders/`).then((res) => res.data),
+          },
+          {
+            path: "fabricants",
+            element: <ManufacturersPage />,
+            loader: () =>
+              axios.get(`${apiUrl}/api/manufacturers/`).then((res) => res.data),
+          },
+        ],
       },
       {
         path: "/user",

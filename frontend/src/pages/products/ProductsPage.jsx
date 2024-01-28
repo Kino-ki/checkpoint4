@@ -1,5 +1,5 @@
 import { useLoaderData } from "react-router-dom";
-import ProductList from "../components/Products/ProductList";
+import ProductList from "../../components/Products/ProductList";
 
 export default function ProductsPage() {
   const products = useLoaderData();
