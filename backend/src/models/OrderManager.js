@@ -7,30 +7,35 @@ class OrdersManager extends AbstractManager {
 
   async readAllOrders() {
     const [rows] = await this.database.query(`
-    SELECT o.*, u.username, p.product_name FROM ${this.table} AS o 
-    JOIN user AS u ON o.user_id=u.id
-    JOIN product AS p ON o.product_id = p.id
-    ORDER BY user_id DESC
+    SELECT u.firstname, u.lastname, u.adress, p.product_name, SUM(c.quantity) as quantity, SUM(p.price) AS total_price
+    FROM ${this.table} AS o
+    JOIN user AS u ON o.user_id = u.id 
+    JOIN product AS p ON p.id = o.product_id
+    JOIN cart AS c ON c.id = o.cart_id
+    GROUP BY u.firstname, u.lastname, u.adress, p.product_name
+    ORDER BY u.firstname, u.lastname ASC
     `);
     return rows;
   }
 
   async readOneOrder(userId) {
     const [rows] = await this.database.query(
-      ` SELECT u.username, p.product_name, o.quantity FROM ${this.table} AS o 
-      JOIN user AS u ON c.user_id=u.id
-      JOIN product AS p ON c.product_id = p.id
-      WHERE user_id=?
-      ORDER BY user_id DESC`,
+      `SELECT u.firstname, u.lastname, u.adress, p.product_name, SUM(c.quantity) as quantity, SUM(p.price) AS total_price
+      FROM ${this.table} AS o
+      JOIN user AS u ON o.user_id = u.id 
+      JOIN product AS p ON p.id = o.product_id
+      JOIN cart AS c ON c.id = o.cart_id
+      WHERE o.user_id= ?
+      GROUP BY u.firstname, u.lastname, u.adress, p.product_name`,
       [userId]
     );
     return rows;
   }
 
-  async create(userId, productId) {
+  async create(userId, cartId, prodId) {
     const result = await this.database.query(
-      `INSERT INTO ${this.table} (user_id, product_id) VALUES (? , ?)`,
-      [userId, productId]
+      `INSERT INTO ${this.table} (user_id, cart_id, product_id) VALUES (? , ?)`,
+      [userId, cartId, prodId]
     );
     return result;
   }

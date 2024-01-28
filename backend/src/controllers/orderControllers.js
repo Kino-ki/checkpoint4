@@ -32,9 +32,9 @@ const readByUser = async (req, res, next) => {
 };
 
 const add = async (req, res, next) => {
-  const { user_id: userId, product_id: productId } = req.body;
+  const { user_id: userId, cart_id: cartId, product_id: prodId } = req.body;
   try {
-    const result = await tables.orders.create(userId, productId);
+    const result = await tables.orders.create(userId, cartId, prodId);
     if (result.affectedRows !== 0) {
       res.status(201).json({
         message: `nouveau panier créé`,

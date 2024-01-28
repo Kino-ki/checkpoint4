@@ -15,9 +15,9 @@ CREATE TABLE cart
 CREATE TABLE orders
 (
   id         INT NOT NULL AUTO_INCREMENT,
-  user_id    INT NOT NULL,
-  product_id INT NOT NULL,
-  quantity  INT NOT NULL DEFAULT 1,
+  user_id     INT NOT NULL,
+  cart_id    INT NOT NULL,
+  product_id    INT NOT NULL,
   created_at DATETIME NOT NULL DEFAULT NOW(),
   PRIMARY KEY (id)
 );
@@ -71,16 +71,22 @@ ALTER TABLE cart
   ADD CONSTRAINT FK_product_TO_cart
     FOREIGN KEY (product_id)
     REFERENCES Product (id);
+
 ALTER TABLE orders
   ADD CONSTRAINT FK_user_TO_orders
     FOREIGN KEY (user_id)
     REFERENCES user (id);
 
 ALTER TABLE orders
+  ADD CONSTRAINT FK_cart_TO_orders
+    FOREIGN KEY (cart_id)
+    REFERENCES cart (id);
+    
+ALTER TABLE orders
   ADD CONSTRAINT FK_product_TO_orders
     FOREIGN KEY (product_id)
-    REFERENCES Product (id);
-
+    REFERENCES product (id);
+    
 ALTER TABLE product
   ADD CONSTRAINT FK_manufacturer_TO_product
     FOREIGN KEY (manufacturer_id)

@@ -7,30 +7,33 @@ class CartManager extends AbstractManager {
 
   async readAllCarts() {
     const [rows] = await this.database.query(`
-    SELECT c.*, u.username, p.product_name FROM ${this.table} AS c 
+    SELECT u.username, p.product_name, SUM(c.quantity) AS qantity, SUM(p.price) AS total_price
+    FROM ${this.table} AS c
     JOIN user AS u ON c.user_id=u.id
-    JOIN product AS p ON c.product_id = p.id
-    ORDER BY user_id DESC
+    JOIN product AS p ON c.product_id=p.id
+    GROUP BY u.username, p.product_name
+    ORDER BY u.username ASC
     `);
     return rows;
   }
 
   async readOneCart(userId) {
     const [rows] = await this.database.query(
-      ` SELECT u.username, p.product_name, c.quantity FROM ${this.table} AS c 
+      `SELECT u.username, p.product_name, SUM(c.quantity) AS qantity, SUM(p.price) AS total_price
+      FROM ${this.table} AS c
       JOIN user AS u ON c.user_id=u.id
-      JOIN product AS p ON c.product_id = p.id
-      WHERE user_id=?
-      ORDER BY user_id DESC`,
+      JOIN product AS p ON c.product_id=p.id
+      WHERE c.user_id=?
+      GROUP BY u.username, p.product_name`,
       [userId]
     );
     return rows;
   }
 
-  async create(userId, productId) {
+  async create(userId, productId, quantity) {
     const result = await this.database.query(
-      `INSERT INTO ${this.table} (user_id, product_id) VALUES (? , ?)`,
-      [userId, productId]
+      `INSERT INTO ${this.table} (user_id, product_id, quantity) VALUES (? , ?, ?)`,
+      [userId, productId, quantity]
     );
     return result;
   }
