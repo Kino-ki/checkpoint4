@@ -1,7 +1,7 @@
 import { useLoaderData } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import CartCard from "../components/CartCard";
+import CartCard from "../../components/CartCard";
 
 export default function SantaListPage() {
   const products = useLoaderData();

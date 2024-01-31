@@ -43,7 +43,7 @@ export default function SignUpPage() {
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="font-heading ">
         {/* (((((((((((((((((((((((((((((((((((((((((())))))))))))))             USERNAME              ((((((((((())))))))))))))))))))))))))))))))))))))) */}
-        <div className=" flex flex-col justify-center align-middle gap-5 py-10 mx-96 border-b-4 border-t-4 border-double border-redsanta ">
+        <div className=" flex flex-col justify-center align-middle gap-5 py-10 mx-[42rem] ">
           <div className="flex flex-col ">
             <div className="flex flex-row justify-center">
               <div className="flex flex-col">

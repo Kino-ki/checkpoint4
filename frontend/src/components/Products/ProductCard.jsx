@@ -1,4 +1,9 @@
 import PropTypes from "prop-types";
+// import { useState, useEffect } from "react";
+// import axios from "axios";
+import { Select } from "flowbite-react";
+
+// ((((((((((((((((((((((((        WORK IN PROGESS (ordering productCard ^^)                     ))))))))))))))))))))))))
 
 export default function ProductCard({
   name,
@@ -6,6 +11,8 @@ export default function ProductCard({
   price,
   category,
   manufactur,
+  // setUpdate,
+  // id,
 }) {
   // --------------------------------------------- handle cart items quantity -------------------------------------------
   // const [count, setCount] = useState(fav);
@@ -29,14 +36,26 @@ export default function ProductCard({
   //     .then(() => {
   //       setUpdate(true);
   //     });
-  // }, [count]);
+  // }, [count])
+
+  const arrayRange = (start, stop, step) =>
+    Array.from(
+      { length: (stop - start) / step + 1 },
+      (value, index) => start + index * step
+    );
+  let myNum;
+  if (quantity > 15) {
+    myNum = 15;
+  } else {
+    myNum = quantity;
+  }
+
+  const selectArray = arrayRange(1, myNum, 1);
 
   return (
     // --------------------------------------------Item Informations----------------------------------------
-    <div className="bg-greensanta border-e-8 border-b-8 border-double border-redsanta text-yellowsanta p-28 py-10 shadow-2xl rounded-2xl">
-      <div className="text-center font-semibold text-4xl mb-14 font-heading ">
-        {name}
-      </div>
+    <div className="bg-greensanta border-e-8 font-heading border-b-8 border-double border-redsanta text-yellowsanta p-28 py-10 shadow-2xl rounded-2xl">
+      <div className="text-center font-semibold text-4xl mb-14">{name}</div>
       <div className="flex flex-row justify-between">
         <div className="font-heading text-2xl underline underline-offset-4 decoration-wavy">
           {category}{" "}
@@ -48,29 +67,15 @@ export default function ProductCard({
         <div className="font-heading">par: {manufactur} </div>
       </div>
       {/* ----------------------------------------------CART MANAGER---------------------------------------- */}
-      {/* <div className="flex flex-row justify-between font-heading text-2xl mt-5"> */}
-      {/* <div className="flex flex-row gap-10"> */}
-      {/* <button
-            className="hover:text-redsanta active:text-earthsanta shadow-lg rounded-xl active:shadow-sm px-3"
-            type="button"
-            onClick={addItemToCart}
-          >
-            veux
-          </button>
-          <button
-            className="hover:text-redsanta active:text-earthsanta shadow-lg rounded-xl active:shadow-sm p-2"
-            type="button"
-            onClick={removeItemFromCart}
-          >
-            {" "}
-            veux pas
-          </button> */}
-      {/* </div>
-        <div className=" bg-redsanta h-10 w-10 rounded-full text-center ml-14">
-          {" "}
-          {count}{" "}
-        </div> */}
-      {/* </div> */}
+      <Select className="mx-6">
+        {selectArray.map((s) => (
+          <option value={s}> {s}</option>
+        ))}
+      </Select>
+      <div className="flex flex-row justify-between font-heading text-2xl mt-5">
+        {" "}
+        <div className="flex flex-row gap-10">{}</div>
+      </div>
     </div>
   );
 }
@@ -81,4 +86,7 @@ ProductCard.propTypes = {
   price: PropTypes.number.isRequired,
   manufactur: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
+  // fav: PropTypes.number.isRequired,
+  // setUpdate: PropTypes.func.isRequired,
+  // id: PropTypes.number.isRequired,
 };

@@ -11,22 +11,27 @@ export default function NavBar() {
     },
     {
       id: 2,
-      path: "/fabricants",
+      path: "/produits/fabricants",
       title: "fabricants",
     },
     {
       id: 3,
-      path: "/listenoel",
+      path: "/produits/listenoel",
       title: "N liste du pere noel N",
     },
     {
       id: 4,
-      path: "/user/inscription",
-      title: "inscription",
+      path: "/produits/commandes",
+      title: "N commandes N",
     },
     {
       id: 5,
-      path: "/user/connexion",
+      path: "/profil/inscription",
+      title: "inscription",
+    },
+    {
+      id: 6,
+      path: "/profil/connexion",
       title: "connexion",
     },
   ];
@@ -38,7 +43,7 @@ export default function NavBar() {
             <img alt="logo" className="rounded-full h-28" src={logo} />
           </NavLink>
         </li>
-        <span className="font-toto mt-20 font-heading text-5xl inline-block align-baseline -ml-32 ">
+        <span className="font-toto font-heading text-5xl inline-block align-baseline -ml-32 ">
           {" "}
           la hotte du pere noel{" "}
         </span>

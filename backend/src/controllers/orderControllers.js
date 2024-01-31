@@ -2,9 +2,9 @@ const tables = require("../tables");
 
 const browse = async (req, res, next) => {
   try {
-    const carts = await tables.cart.readAllCarts();
-    if (carts.length) {
-      res.json(carts);
+    const orders = await tables.orders.readAllOrders();
+    if (orders.length) {
+      res.json(orders);
     } else {
       res.status(404).json({
         message: "oops! j'ai rien à afficher",
@@ -18,9 +18,9 @@ const browse = async (req, res, next) => {
 const readByUser = async (req, res, next) => {
   const { user_id: userId } = req.params;
   try {
-    const cart = await tables.cart.readOneCart(userId);
-    if (cart != null) {
-      res.json(cart);
+    const order = await tables.orders.readOneOrder(userId);
+    if (order != null) {
+      res.json(order);
     } else {
       res.status(404).json({
         message: "oops! Grey area, nothing to display.",
@@ -32,9 +32,9 @@ const readByUser = async (req, res, next) => {
 };
 
 const add = async (req, res, next) => {
-  const { user_id: userId, product_id: productId, quantity } = req.body;
+  const { user_id: userId, cart_id: cartId, product_id: prodId } = req.body;
   try {
-    const result = await tables.cart.create(userId, productId, quantity);
+    const result = await tables.orders.create(userId, cartId, prodId);
     if (result.affectedRows !== 0) {
       res.status(201).json({
         message: `nouveau panier créé`,
@@ -53,7 +53,7 @@ const edit = async (req, res, next) => {
   const { quantity } = req.body;
   const { id } = req.params;
   try {
-    const result = await tables.cart.update(quantity, id);
+    const result = await tables.orders.update(quantity, id);
     if (result.changedRows !== 0) {
       res.status(200).json({
         message: "quantité modifiée",
@@ -71,14 +71,14 @@ const edit = async (req, res, next) => {
 const destroy = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const result = await tables.cart.delete(id);
+    const result = await tables.orders.delete(id);
     if (result.affectedRows !== 0) {
       res.json({
         message: `Deleted entry ${id}`,
       });
     } else {
       res.status(404).json({
-        message: "Cart not found",
+        message: "order not found",
       });
     }
   } catch (e) {
