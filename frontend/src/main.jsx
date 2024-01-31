@@ -54,7 +54,7 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "/user",
+        path: "/profil",
         children: [
           {
             path: "inscription",
