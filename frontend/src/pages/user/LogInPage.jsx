@@ -22,7 +22,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="h-[75vh] border-redsanta">
+    <div className=" border-redsanta">
       <div className=" flex flex-row justify-center text-7xl font-semibold my-6">
         <div className=" flex flex-row justify-center text-7xl  my-6">
           <p className="hover:animate-ping hover:text-greensanta">c</p>{" "}

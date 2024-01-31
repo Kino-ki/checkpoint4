@@ -43,7 +43,7 @@ export default function NavBar() {
             <img alt="logo" className="rounded-full h-28" src={logo} />
           </NavLink>
         </li>
-        <span className="font-toto mt-20 font-heading text-5xl inline-block align-baseline -ml-32 ">
+        <span className="font-toto font-heading text-5xl inline-block align-baseline -ml-32 ">
           {" "}
           la hotte du pere noel{" "}
         </span>

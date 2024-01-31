@@ -182,7 +182,6 @@ export default function ProductList({ dbproducts }) {
               quantity={p.quantity}
               price={p.price}
               category={p.category}
-              fav={p.is_fav}
               manufactur={p.manufacturer}
             />
           ))
