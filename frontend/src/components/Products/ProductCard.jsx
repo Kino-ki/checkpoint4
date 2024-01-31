@@ -1,7 +1,9 @@
-import PropTypes, { array } from "prop-types";
-import { useState, useEffect } from "react";
-import axios from "axios";
+import PropTypes from "prop-types";
+// import { useState, useEffect } from "react";
+// import axios from "axios";
 import { Select } from "flowbite-react";
+
+// ((((((((((((((((((((((((        WORK IN PROGESS (ordering productCard ^^)                     ))))))))))))))))))))))))
 
 export default function ProductCard({
   name,
@@ -9,8 +11,8 @@ export default function ProductCard({
   price,
   category,
   manufactur,
-  setUpdate,
-  id,
+  // setUpdate,
+  // id,
 }) {
   // --------------------------------------------- handle cart items quantity -------------------------------------------
   // const [count, setCount] = useState(fav);
@@ -84,7 +86,7 @@ ProductCard.propTypes = {
   price: PropTypes.number.isRequired,
   manufactur: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
-  fav: PropTypes.number.isRequired,
-  setUpdate: PropTypes.func.isRequired,
-  id: PropTypes.number.isRequired,
+  // fav: PropTypes.number.isRequired,
+  // setUpdate: PropTypes.func.isRequired,
+  // id: PropTypes.number.isRequired,
 };

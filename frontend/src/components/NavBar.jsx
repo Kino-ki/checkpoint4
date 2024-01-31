@@ -26,12 +26,12 @@ export default function NavBar() {
     },
     {
       id: 5,
-      path: "/user/inscription",
+      path: "/profil/inscription",
       title: "inscription",
     },
     {
       id: 6,
-      path: "/user/connexion",
+      path: "/profil/connexion",
       title: "connexion",
     },
   ];
