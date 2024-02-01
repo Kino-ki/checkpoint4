@@ -16,9 +16,9 @@ const browse = async (req, res, next) => {
 };
 
 const readByUser = async (req, res, next) => {
-  const { user_id: userId } = req.params;
   try {
-    const cart = await tables.cart.readOneCart(userId);
+    const { sub } = req.auth;
+    const cart = await tables.cart.readOneCart(sub);
     if (cart != null) {
       res.json(cart);
     } else {
@@ -32,9 +32,10 @@ const readByUser = async (req, res, next) => {
 };
 
 const add = async (req, res, next) => {
-  const { user_id: userId, product_id: productId, quantity } = req.body;
   try {
-    const result = await tables.cart.create(userId, productId, quantity);
+    const { sub } = req.auth;
+    const { product_id: productId, quantity } = req.body;
+    const result = await tables.cart.create(sub, productId, quantity);
     if (result.affectedRows !== 0) {
       res.status(201).json({
         message: `nouveau panier créé`,

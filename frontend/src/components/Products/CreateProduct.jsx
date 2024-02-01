@@ -54,7 +54,7 @@ export default function CreateProduct({ setUpdate }) {
   // ---------------------------------------------------------------------RENDER-------------------------------------
   return (
     <div>
-      <h1 className="font-heading flex flex-row justify-end mr-96 text-3xl mt-10 ">
+      <h1 className="font-heading flex flex-row justify-end mr-96 text-3xl mt-3">
         {" "}
         Tu veux ajouter quelque chose? C'est{" "}
         <button

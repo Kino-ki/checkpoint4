@@ -29,24 +29,11 @@ const read = async (req, res, next) => {
   }
 };
 
-const edit = async (req, res) => {
+const editStock = async (req, res) => {
   const { id } = req.params;
-  const {
-    product_name: prodName,
-    price,
-    quantity,
-    manufacturer_id: manufId,
-    category_id: catId,
-  } = req;
+  const { quantity } = req.body;
   try {
-    const result = await tables.product.update(
-      prodName,
-      price,
-      quantity,
-      manufId,
-      catId,
-      id
-    );
+    const result = await tables.product.update(quantity, id);
     if (result == null) {
       res.status(404).send("pas de bol");
     } else {
@@ -99,4 +86,4 @@ const remove = async (req, res) => {
   }
 };
 
-module.exports = { browse, read, edit, add, remove };
+module.exports = { browse, read, editStock, add, remove };

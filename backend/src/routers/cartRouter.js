@@ -1,6 +1,7 @@
 const express = require("express");
 
 const cartRouter = express.Router();
+const verifyToken = require("../middlewares/auth");
 
 const {
   browse,
@@ -11,9 +12,9 @@ const {
 } = require("../controllers/cartControllers");
 
 cartRouter.get("/", browse);
-cartRouter.get("/:user_id", readByUser);
+cartRouter.get("/usercart", verifyToken, readByUser);
 
-cartRouter.post("/", add);
+cartRouter.post("/", verifyToken, add);
 cartRouter.put("/:id", edit);
 
 cartRouter.delete("/:id", destroy);

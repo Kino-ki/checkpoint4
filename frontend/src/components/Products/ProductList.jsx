@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
+import { useOutletContext } from "react-router-dom";
 import { TextInput, Select, RangeSlider, Label } from "flowbite-react";
 import ProductCard from "./ProductCard";
 import CreateProduct from "./CreateProduct";
@@ -11,6 +12,8 @@ export default function ProductList({ dbproducts }) {
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [manuf, setManuf] = useState();
   const [categ, setCateg] = useState();
+  const [userData, setUserData] = useState();
+  const { auth } = useOutletContext();
 
   // -------------------------------------------------------[AXIOS POST]Automatic update when query ----------------------------------------
   const [update, setUpdate] = useState(false);
@@ -37,6 +40,15 @@ export default function ProductList({ dbproducts }) {
     axios.get("http://localhost:3310/api/categories").then((res) => {
       setCateg(res.data);
     });
+  }, []);
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/api/users/profile`, {
+        headers: {
+          Authorization: `Bearer ${auth?.token}`,
+        },
+      })
+      .then((res) => setUserData(res.data[0]));
   }, []);
   // --------------------------------------------------------[FILTERS] handleChange inputs functions ---------------------------------------------------------
 
@@ -104,7 +116,7 @@ export default function ProductList({ dbproducts }) {
     <div className="flex flex-col justify-center align-middle">
       {/* ---------------------------------------------------------FILTERS INPUT -------------------------------------------------------- */}
       <div className="flex flex-col">
-        <div className="font-heading text-3xl flex flex-row justify-start ml-96 mt-16">
+        <div className="font-heading text-3xl flex flex-row justify-start ml-96 mt-5">
           marre de chercher ? c'est{" "}
           <button
             className="text-earthsanta hover:text-redsanta underline ml-2"
@@ -171,17 +183,18 @@ export default function ProductList({ dbproducts }) {
       {/* ---------------------------------------- CREATE PRODUCT COMPONENT----------------------------------------- */}
       <CreateProduct setUpdate={setUpdate} />
       {/* ---------------------------------------- MAP DATA AND LIST ----------------------------------------- */}
-      <div className="flex flex-wrap justify-center p-32 pt-10 mt-16 gap-14">
+      <div className="flex flex-wrap justify-center p-10 gap-14">
         {filteredProducts.length ? (
           filteredProducts.map((p) => (
             <ProductCard
               setUpdate={setUpdate}
               key={p.id}
-              id={p.id}
+              prodId={p.id}
               name={p.product_name}
               quantity={p.quantity}
               price={p.price}
               category={p.category}
+              userId={userData?.id}
               manufactur={p.manufacturer}
             />
           ))
@@ -201,9 +214,10 @@ ProductList.propTypes = {
       name: PropTypes.string.isRequired,
       quantity: PropTypes.number.isRequired,
       price: PropTypes.number.isRequired,
-      is_fav: PropTypes.number.isRequired,
       manufacturer: PropTypes.string.isRequired,
       category: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
+      userId: PropTypes.number.isRequired,
     })
   ).isRequired,
 };

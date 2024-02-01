@@ -17,7 +17,7 @@ class CartManager extends AbstractManager {
     return rows;
   }
 
-  async readOneCart(userId) {
+  async readOneCart(sub) {
     const [rows] = await this.database.query(
       `SELECT u.username, p.product_name, SUM(c.quantity) AS qantity, SUM(p.price) AS total_price
       FROM ${this.table} AS c
@@ -25,15 +25,15 @@ class CartManager extends AbstractManager {
       JOIN product AS p ON c.product_id=p.id
       WHERE c.user_id=?
       GROUP BY u.username, p.product_name`,
-      [userId]
+      [sub]
     );
     return rows;
   }
 
-  async create(userId, productId, quantity) {
+  async create(sub, productId, quantity) {
     const result = await this.database.query(
       `INSERT INTO ${this.table} (user_id, product_id, quantity) VALUES (? , ?, ?)`,
-      [userId, productId, quantity]
+      [sub, productId, quantity]
     );
     return result;
   }

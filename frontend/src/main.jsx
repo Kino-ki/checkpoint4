@@ -36,8 +36,6 @@ const router = createBrowserRouter([
           {
             path: "listenoel",
             element: <SantaListPage />,
-            loader: () =>
-              axios.get(`${apiUrl}/api/carts/`).then((res) => res.data),
           },
           {
             path: "commandes",

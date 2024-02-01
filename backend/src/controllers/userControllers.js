@@ -16,9 +16,9 @@ const browse = async (req, res, next) => {
 };
 
 const readByUser = async (req, res, next) => {
-  const { id } = req.params;
+  const { sub } = req.auth;
   try {
-    const user = await tables.user.readOneuser(id);
+    const user = await tables.user.readOneuser(sub);
     if (user != null) {
       res.json(user);
     } else {

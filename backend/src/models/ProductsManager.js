@@ -27,10 +27,10 @@ class ProductsManager extends AbstractManager {
     return rows;
   }
 
-  async update(prodName, price, quantity, manufId, catId, id) {
+  async update(quantity, id) {
     const [result] = await this.database.query(
-      `UPDATE ${this.table} SET product_name=? , price=?, quantity=?, manufacturer_id=?, category_id=? where ID=?`,
-      [prodName, price, quantity, manufId, catId, id]
+      `UPDATE ${this.table} SET quantity=? where ID=?`,
+      [quantity, id]
     );
     return result.affectedRows;
   }
