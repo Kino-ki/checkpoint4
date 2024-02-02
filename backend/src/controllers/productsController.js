@@ -15,10 +15,23 @@ const browse = async (req, res) => {
   }
 };
 
-const read = async (req, res, next) => {
+const readById = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const product = await tables.product.readWithId(id);
+    if (product == null) {
+      res.sendStatus(404);
+    } else {
+      res.json(product);
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+const readByManuf = async (req, res, next) => {
   const { manufacturer_id: manufacturerId } = req.params;
   try {
-    const product = await tables.product.read(manufacturerId);
+    const product = await tables.product.readWithManuf(manufacturerId);
     if (product == null) {
       res.sendStatus(404);
     } else {
@@ -29,24 +42,11 @@ const read = async (req, res, next) => {
   }
 };
 
-const edit = async (req, res) => {
+const editStock = async (req, res) => {
   const { id } = req.params;
-  const {
-    product_name: prodName,
-    price,
-    quantity,
-    manufacturer_id: manufId,
-    category_id: catId,
-  } = req;
+  const { updatedQuantity } = req.body;
   try {
-    const result = await tables.product.update(
-      prodName,
-      price,
-      quantity,
-      manufId,
-      catId,
-      id
-    );
+    const result = await tables.product.update(updatedQuantity, id);
     if (result == null) {
       res.status(404).send("pas de bol");
     } else {
@@ -99,4 +99,4 @@ const remove = async (req, res) => {
   }
 };
 
-module.exports = { browse, read, edit, add, remove };
+module.exports = { browse, readByManuf, readById, editStock, add, remove };

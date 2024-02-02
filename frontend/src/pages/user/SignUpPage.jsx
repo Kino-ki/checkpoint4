@@ -23,7 +23,7 @@ export default function SignUpPage() {
   const onSubmit = (data) => {
     axios
       .post(`${import.meta.env.VITE_BACKEND_URL}/api/users`, data)
-      .then(navigate("/user/login"));
+      .then(navigate("/profil/connexion"));
   };
 
   return (
@@ -43,7 +43,7 @@ export default function SignUpPage() {
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="font-heading ">
         {/* (((((((((((((((((((((((((((((((((((((((((())))))))))))))             USERNAME              ((((((((((())))))))))))))))))))))))))))))))))))))) */}
-        <div className=" flex flex-col justify-center align-middle gap-5 py-10 mx-96 border-b-4 border-t-4 border-double border-redsanta ">
+        <div className=" flex flex-col justify-center align-middle gap-5 py-10 lg:mx-[42rem] ">
           <div className="flex flex-col ">
             <div className="flex flex-row justify-center">
               <div className="flex flex-col">
@@ -136,9 +136,9 @@ export default function SignUpPage() {
             <button
               type="submit"
               onClick={notify}
-              className="text-2xl hover:font-semibold"
+              className="text-3xl hover:font-semibold "
             >
-              soumsoum
+              VALIDER
             </button>
             {/* <ToastContainer
               position="top-right"

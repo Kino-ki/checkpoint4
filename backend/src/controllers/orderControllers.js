@@ -2,9 +2,9 @@ const tables = require("../tables");
 
 const browse = async (req, res, next) => {
   try {
-    const users = await tables.user.readAllusers();
-    if (users.length) {
-      res.json(users);
+    const orders = await tables.orders.readAllOrders();
+    if (orders.length) {
+      res.json(orders);
     } else {
       res.status(404).json({
         message: "oops! j'ai rien à afficher",
@@ -18,9 +18,9 @@ const browse = async (req, res, next) => {
 const readByUser = async (req, res, next) => {
   const { sub } = req.auth;
   try {
-    const user = await tables.user.readOneuser(sub);
-    if (user != null) {
-      res.json(user);
+    const order = await tables.orders.readOneOrder(sub);
+    if (order != null) {
+      res.json(order);
     } else {
       res.status(404).json({
         message: "oops! Grey area, nothing to display.",
@@ -32,12 +32,12 @@ const readByUser = async (req, res, next) => {
 };
 
 const add = async (req, res, next) => {
-  const { username: userName, email, hashedpwd } = req.body;
+  const { user_id: userId, cart_id: cartId, product_id: prodId } = req.body;
   try {
-    const result = await tables.user.create(userName, email, hashedpwd);
+    const result = await tables.orders.create(userId, cartId, prodId);
     if (result.affectedRows !== 0) {
       res.status(201).json({
-        message: `hey you!`,
+        message: `nouveau panier créé`,
       });
     } else {
       res.status(404).json({
@@ -50,28 +50,13 @@ const add = async (req, res, next) => {
 };
 
 const edit = async (req, res, next) => {
-  const {
-    username: userName,
-    email,
-    hashed_password: hashedPassword,
-    firstname: firstName,
-    lastname: lastName,
-    adress,
-  } = req.body;
+  const { quantity } = req.body;
   const { id } = req.params;
   try {
-    const result = await tables.user.update(
-      userName,
-      email,
-      hashedPassword,
-      firstName,
-      lastName,
-      adress,
-      id
-    );
+    const result = await tables.orders.update(quantity, id);
     if (result.changedRows !== 0) {
       res.status(200).json({
-        message: "user Changes done",
+        message: "quantité modifiée",
       });
     } else {
       res.status(404).json({
@@ -86,14 +71,14 @@ const edit = async (req, res, next) => {
 const destroy = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const result = await tables.user.delete(id);
+    const result = await tables.orders.delete(id);
     if (result.affectedRows !== 0) {
       res.json({
         message: `Deleted entry ${id}`,
       });
     } else {
       res.status(404).json({
-        message: "user not found",
+        message: "order not found",
       });
     }
   } catch (e) {

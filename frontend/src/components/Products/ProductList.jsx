@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
+import { useOutletContext, useNavigate } from "react-router-dom";
 import { TextInput, Select, RangeSlider, Label } from "flowbite-react";
 import ProductCard from "./ProductCard";
 import CreateProduct from "./CreateProduct";
@@ -11,17 +12,21 @@ export default function ProductList({ dbproducts }) {
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [manuf, setManuf] = useState();
   const [categ, setCateg] = useState();
+  const [userData, setUserData] = useState();
+  const [isUpdated, setIsUpdated] = useState(false);
+
+  const { auth } = useOutletContext();
+  const navigate = useNavigate();
 
   // -------------------------------------------------------[AXIOS POST]Automatic update when query ----------------------------------------
-  const [update, setUpdate] = useState(false);
   useEffect(() => {
-    if (update) {
+    if (isUpdated) {
       axios.get("http://localhost:3310/api/products/").then((res) => {
         setFilteredProducts(res.data);
-        setUpdate(false);
+        setIsUpdated(false);
       });
     }
-  }, [update]);
+  }, [isUpdated]);
   // --------------------------------------------------------- OnClick Function -----------------------
   const [visible, setVisible] = useState(false);
   const HandleClick = () => {
@@ -29,14 +34,24 @@ export default function ProductList({ dbproducts }) {
   };
   // ------------------------------------------------ [FILTERS INPUT] GET cactegories & manufacturers ------------------------------------
   useEffect(() => {
+    if (!auth) {
+      navigate("/profil/connexion");
+    }
     axios.get("http://localhost:3310/api/manufacturers").then((res) => {
       setManuf(res.data);
     });
-  }, []);
-  useEffect(() => {
+
     axios.get("http://localhost:3310/api/categories").then((res) => {
       setCateg(res.data);
     });
+
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/api/users/profile`, {
+        headers: {
+          Authorization: `Bearer ${auth?.token}`,
+        },
+      })
+      .then((res) => setUserData(res.data[0]));
   }, []);
   // --------------------------------------------------------[FILTERS] handleChange inputs functions ---------------------------------------------------------
 
@@ -104,10 +119,10 @@ export default function ProductList({ dbproducts }) {
     <div className="flex flex-col justify-center align-middle">
       {/* ---------------------------------------------------------FILTERS INPUT -------------------------------------------------------- */}
       <div className="flex flex-col">
-        <div className="font-heading text-3xl flex flex-row justify-start ml-96 mt-16">
+        <div className="font-heading lg:text-3xl text-2xl flex flex-row justify-start lg:ml-96 lg:mt-5">
           marre de chercher ? c'est{" "}
           <button
-            className="text-earthsanta hover:text-redsanta underline ml-2"
+            className="text-earthsanta hover:text-redsanta underline lg:ml-2"
             type="button"
             onClick={HandleClick}
           >
@@ -116,7 +131,7 @@ export default function ProductList({ dbproducts }) {
           </button>
         </div>
         {visible && (
-          <div className="flex flex-row justify-center gap-10 font-heading">
+          <div className="flex flex-row justify-center lg:gap-10 font-heading">
             {/* ---------------------------------------------------------[FILTERS INPUT] name-------------------------------------------------------- */}
             <TextInput
               placeholder="nom"
@@ -169,26 +184,27 @@ export default function ProductList({ dbproducts }) {
         )}
       </div>
       {/* ---------------------------------------- CREATE PRODUCT COMPONENT----------------------------------------- */}
-      <CreateProduct setUpdate={setUpdate} />
+      <CreateProduct setIsUpdated={setIsUpdated} />
       {/* ---------------------------------------- MAP DATA AND LIST ----------------------------------------- */}
-      <div className="flex flex-wrap justify-center p-32 pt-10 mt-16 gap-14">
+      <div className="flex flex-wrap justify-center lg:p-10 lg:gap-14 gap-8">
         {filteredProducts.length ? (
           filteredProducts.map((p) => (
             <ProductCard
-              setUpdate={setUpdate}
+              setIsUpdated={setIsUpdated}
               key={p.id}
-              id={p.id}
+              prodId={p.id}
               name={p.product_name}
               quantity={p.quantity}
               price={p.price}
               category={p.category}
-              fav={p.is_fav}
+              userId={userData?.id}
               manufactur={p.manufacturer}
+              isUpdated={isUpdated}
             />
           ))
         ) : (
           <h1 className="font-heading text-5xl">
-            Désolée petit lutin, mais on n'a rien comme cela b
+            Désolée petit lutin, mais on ne l'a pas encore.
           </h1>
         )}
       </div>
@@ -202,9 +218,10 @@ ProductList.propTypes = {
       name: PropTypes.string.isRequired,
       quantity: PropTypes.number.isRequired,
       price: PropTypes.number.isRequired,
-      is_fav: PropTypes.number.isRequired,
       manufacturer: PropTypes.string.isRequired,
       category: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
+      userId: PropTypes.number.isRequired,
     })
   ).isRequired,
 };
