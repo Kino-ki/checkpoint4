@@ -18,7 +18,7 @@ class OrdersManager extends AbstractManager {
     return rows;
   }
 
-  async readOneOrder(userId) {
+  async readOneOrder(sub) {
     const [rows] = await this.database.query(
       `SELECT u.firstname, u.lastname, u.adress, p.product_name, SUM(c.quantity) as quantity, SUM(p.price) AS total_price
       FROM ${this.table} AS o
@@ -27,7 +27,7 @@ class OrdersManager extends AbstractManager {
       JOIN cart AS c ON c.id = o.cart_id
       WHERE o.user_id= ?
       GROUP BY u.firstname, u.lastname, u.adress, p.product_name`,
-      [userId]
+      [sub]
     );
     return rows;
   }

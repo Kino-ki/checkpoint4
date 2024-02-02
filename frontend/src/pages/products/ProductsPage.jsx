@@ -5,7 +5,7 @@ export default function ProductsPage() {
   const products = useLoaderData();
   return (
     <div className="flex flex-col">
-      <div className=" flex flex-row justify-center text-8xl font-semibold mt-2">
+      <div className=" flex flex-row justify-center text-6xl lg:text-8xl font-semibold mt-2">
         {" "}
         <p className="hover:animate-ping hover:text-redsanta">p</p>
         <p className="hover:animate-ping hover:text-greensanta">r</p>{" "}

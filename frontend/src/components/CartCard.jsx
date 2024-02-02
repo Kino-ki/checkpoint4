@@ -79,16 +79,22 @@ export default function CartCard({
   };
   useEffect(() => {
     if (newOrder) {
+      axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/api/carts//neworder/${prodId}`,
+        {
+          is_ordered: 1,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${auth.token}`,
+          },
+        }
+      );
       axios
         .put(
-          `${import.meta.env.VITE_BACKEND_URL}/api/carts//neworder/${prodId}`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/products/stock/${prodId}`,
           {
-            is_ordered: 1,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${auth.token}`,
-            },
+            quantity: cartquantity,
           }
         )
         .then(() => navigate("/produits/commandes"));
@@ -96,10 +102,12 @@ export default function CartCard({
   });
 
   return (
-    <div className="bg-redsanta rounded-2xl py-3 shadow-2xl">
-      <div className="flex flex-row justify-between px-10">
-        <div className="font-heading text-6xl">{name}</div>
-        <div className="flex flex-row">
+    <div className="lg:bg-redsanta bg-[#99324c] rounded-2xl py-3 shadow-2xl">
+      <div className="flex lg:flex-row flex-col lg:justify-between px-10">
+        <div className="font-heading text-center mb-2 text-4xl lg:text-6xl">
+          {name}
+        </div>
+        <div className="flex flex-row justify-end">
           {toast && (
             <Toast className="mr-4 shadow-xl">
               <HiExclamation className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-orange-500 dark:bg-orange-700 dark:text-orange-200" />
@@ -114,7 +122,9 @@ export default function CartCard({
             } ml-4 h-10 outline outline-earthsanta bg-greensanta mt-4`}
             onClick={() => setUpdateStock(true)}
           >
-            <p className="text-3xl">Modifier</p>
+            <p className="font-light lg:font-normal text-2xl lg:text-3xl">
+              Modifier
+            </p>
           </Button>
           <Button
             type="button"
@@ -123,18 +133,18 @@ export default function CartCard({
             } font-semibold h-10 mt-4 bg-greensanta`}
             onClick={removeItem}
           >
-            <p className="text-3xl">-</p>
+            <p className="font-light lg:font-normal lg:text-3xl">-</p>
           </Button>
           <div
             className={`font-heading ${
               !updateStock ? "visible" : "hidden"
-            } text-6xl mx-3`}
+            } lg:text-6xl text-3xl font-light lg:font-normal mt-2 mx-3`}
           >
             {" "}
             {cartquantity}
           </div>
           <div
-            className={`font-heading 
+            className={`font-heading font-light lg:font-normal
           ${!updateStock ? "hidden" : "visible"}
           text-6xl mx-3`}
           >
@@ -145,10 +155,10 @@ export default function CartCard({
             type="button"
             className={`font-heading ${
               !updateStock ? "hidden" : "visible"
-            } font-semibold h-10 mt-4 bg-greensanta`}
+            } lg:font-semibold font-light h-10 mt-4 bg-greensanta`}
             onClick={addItem}
           >
-            <p className="text-3xl">+</p>
+            <p className="lg:text-3xl">+</p>
           </Button>
           <Button
             type="button"
@@ -157,7 +167,9 @@ export default function CartCard({
             h-10 outline outline-earthsanta bg-greensanta mt-4`}
             onClick={addToOrders}
           >
-            <p className="text-3xl">J'achète</p>
+            <p className="font-light lg:font-normal  text-2xl lg:text-3xl">
+              J'achète
+            </p>
           </Button>
           <Button
             type="button"

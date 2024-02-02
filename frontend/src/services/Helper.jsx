@@ -8,19 +8,9 @@ function NavManager(user) {
         title: "produits",
       },
       {
-        id: 2,
-        path: "/produits/fabricants",
-        title: "fabricants",
-      },
-      {
-        id: 3,
-        path: "/produits/listenoel",
-        title: "N liste du pere noel N",
-      },
-      {
-        id: 4,
-        path: "/produits/commandes",
-        title: "N mes commandes N",
+        id: 5,
+        path: "/produits/expedition",
+        title: "details des commandes",
       },
     ];
   }
@@ -32,14 +22,14 @@ function NavManager(user) {
         title: "produits",
       },
       {
-        id: 2,
-        path: "/produits/fabricants",
-        title: "fabricants",
-      },
-      {
         id: 3,
         path: "/produits/listenoel",
         title: "N liste du pere noel N",
+      },
+      {
+        id: 4,
+        path: "/produits/commandes",
+        title: "N mes commandes N",
       },
     ];
   }

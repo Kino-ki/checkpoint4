@@ -119,10 +119,10 @@ export default function ProductList({ dbproducts }) {
     <div className="flex flex-col justify-center align-middle">
       {/* ---------------------------------------------------------FILTERS INPUT -------------------------------------------------------- */}
       <div className="flex flex-col">
-        <div className="font-heading text-3xl flex flex-row justify-start ml-96 mt-5">
+        <div className="font-heading lg:text-3xl text-2xl flex flex-row justify-start lg:ml-96 lg:mt-5">
           marre de chercher ? c'est{" "}
           <button
-            className="text-earthsanta hover:text-redsanta underline ml-2"
+            className="text-earthsanta hover:text-redsanta underline lg:ml-2"
             type="button"
             onClick={HandleClick}
           >
@@ -131,7 +131,7 @@ export default function ProductList({ dbproducts }) {
           </button>
         </div>
         {visible && (
-          <div className="flex flex-row justify-center gap-10 font-heading">
+          <div className="flex flex-row justify-center lg:gap-10 font-heading">
             {/* ---------------------------------------------------------[FILTERS INPUT] name-------------------------------------------------------- */}
             <TextInput
               placeholder="nom"
@@ -186,7 +186,7 @@ export default function ProductList({ dbproducts }) {
       {/* ---------------------------------------- CREATE PRODUCT COMPONENT----------------------------------------- */}
       <CreateProduct setIsUpdated={setIsUpdated} />
       {/* ---------------------------------------- MAP DATA AND LIST ----------------------------------------- */}
-      <div className="flex flex-wrap justify-center p-10 gap-14">
+      <div className="flex flex-wrap justify-center lg:p-10 lg:gap-14 gap-8">
         {filteredProducts.length ? (
           filteredProducts.map((p) => (
             <ProductCard
@@ -204,7 +204,7 @@ export default function ProductList({ dbproducts }) {
           ))
         ) : (
           <h1 className="font-heading text-5xl">
-            Désolée petit lutin, mais on n'a rien comme cela b
+            Désolée petit lutin, mais on ne l'a pas encore.
           </h1>
         )}
       </div>

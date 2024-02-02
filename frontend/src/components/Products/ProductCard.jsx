@@ -35,6 +35,9 @@ export default function ProductCard({
     }
     setSelectArray(arrayRange(0, myNum, 1));
   }, []);
+  setTimeout(() => {
+    setToast(false);
+  }, "2000");
 
   // --------------------------------------------- handle Cart -------------------------------------------
   const handleCartQuantity = (e) => {
@@ -60,42 +63,30 @@ export default function ProductCard({
         // setUpdateQuantity(true); <<<--------------------------------- goes to cart (when validated)
       });
   };
-  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< GOES TO CART
-  // useEffect(() => {
-  //   if (updateQuantity) {
-  //     axios
-  //       .put(
-  //         `${import.meta.env.VITE_BACKEND_URL}/api/products/stock/${prodId}`,
-  //         {
-  //           quantity: quantitySelected,
-  //         }
-  //       )
-  //       .then(() => {
-  //         setUpdateQuantity(false);
-  //         setIsUpdated(true);
-  //       });
-  //   }
-  // }, [updateQuantity]);
 
   return (
     // --------------------------------------------Item Informations----------------------------------------
-    <div className="bg-greensanta flex flex-col justify-start border-e-8 font-heading border-b-8 border-double border-redsanta text-yellowsanta p-10 py-10 shadow-2xl rounded-2xl">
-      <div className="text-center font-semibold text-4xl mb-14">{name}</div>
+    <div className="bg-greensanta lg:bg-opacity-95 mt-10  flex flex-col relative w-full lg:w-auto mx-2 p-4 justify-start border-e-4 lg:border-e-8 font-heading border-b-4 lg:border-b-8 border-double border-redsanta text-yellowsanta lg:p-10 lg:py-10 shadow-2xl rounded-2xl">
+      <div className="text-center font-semibold lg:text-4x my-2 text-3xl lg:mb-14">
+        {name}
+      </div>
       <div className="flex flex-row justify-between">
-        <div className="font-heading text-2xl underline underline-offset-4 decoration-wavy">
+        <div className="font-heading lg:text-2xl underline underline-offset-4 decoration-wavy">
           {category}{" "}
         </div>
-        <div className=" text-4xl font-heading mt-5 ml-28">${price}</div>
+        <div className=" lg:text-4xl font-heading lg:mt-5 lg:ml-28">
+          ${price}
+        </div>
       </div>
-      <div className="flex flex-row mt-10 justify-between gap-16">
-        <div className="text-xl  flex flex-col">
+      <div className="flex flex-row lg:mt-10 justify-between lg:gap-16">
+        <div className="text-xl mt-5  flex flex-col">
           <div className="font-heading">quantité restante: {quantity}</div>
           <div className="font-heading">par: {manufactur} </div>
         </div>
-        <div className="flex flex-col mt-3">
+        <div className="flex flex-col items-center mt-4 lg:mt-3">
           <Select onChange={handleCartQuantity}>
             {selectArray.map((s) => (
-              <option key={s} value={s}>
+              <option className="mx-auto" key={s} value={s}>
                 {" "}
                 {s}
               </option>
@@ -109,15 +100,15 @@ export default function ProductCard({
           >
             ajouter au panier
           </button>
-          {toast && (
-            <Toast className="mr-4 shadow-xl">
-              <HiCheck className="inline-flex shrink-0 items-center justify-center rounded-lg text-orange-500 dark:bg-orange-700 dark:text-orange-200" />
-              <div className="font-heading text-xl"> Produit ajouté </div>
-              <Toast.Toggle />
-            </Toast>
-          )}
         </div>
       </div>
+      {toast && (
+        <Toast className="mr-4 shadow-xl absolute top-2 -right-3 w-32 h-10">
+          <HiCheck className="inline-flex shrink-0 items-center justify-center rounded-lg text-orange-500 dark:bg-orange-700 dark:text-orange-200" />
+          <div className="font-heading"> Produit ajouté </div>
+          <Toast.Toggle />
+        </Toast>
+      )}
     </div>
   );
 }

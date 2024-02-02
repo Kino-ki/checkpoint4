@@ -33,8 +33,8 @@ export default function SantaListPage() {
 
   return (
     <div>
-      <div className=" flex flex-row justify-center text-8xl font-semibold mt-14">
-        <p className="font-medium text-9xl -mt-10 mr-10 hover:animate-spin hover:text-redsanta ">
+      <div className=" flex flex-row justify-center text-6xl lg:text-8xl font-semibold mt-3 lg:mt-14">
+        <p className="font-medium text-9xl -mt-10 lg:mr-10 hover:animate-spin hover:text-redsanta ">
           {" "}
           M{" "}
         </p>
@@ -45,23 +45,23 @@ export default function SantaListPage() {
         <p className="hover:animate-ping hover:text-redsanta">a</p>
         <p className="hover:animate-ping hover:text-greensanta">u</p>
         <p className="hover:animate-ping hover:text-redsanta">x</p>{" "}
-        <p className="font-medium text-9xl -mt-10 ml-10 hover:animate-spin hover:text-greensanta">
+        <p className="font-medium text-9xl -mt-10 lg:ml-10 hover:animate-spin hover:text-greensanta">
           {" "}
           M{" "}
         </p>
       </div>
-      <div className="px-60 my-16 ">
-        <div className="flex flex-row justify-between px-10 font-heading text-4xl mt-20 mb-5  underline underline-offset-2 decoration-dotted decoration-greensanta ">
+      <div className="lg:px-60 lg:my-16 ">
+        <div className="flex flex-row justify-between px-10 font-heading text-4xl mt-10 lg:mt-20 mb-5  underline underline-offset-2 decoration-dotted decoration-greensanta ">
           <div>nom</div>
           <div>quantité</div>
         </div>
         <div className="flex flex-col gap-8">
-          {cart?.length ? (
+          {cart?.length &&
             cart
               .filter((c) => c.is_ordered === 0)
               .map((c) => (
                 <CartCard
-                  key={c.username}
+                  key={c.product_id}
                   id={c.id}
                   name={c.product_name}
                   cartquantity={parseInt(c.cart_quantity, 10)}
@@ -71,9 +71,12 @@ export default function SantaListPage() {
                   setUpdate={setUpdate}
                   update={update}
                 />
-              ))
-          ) : (
-            <div> Panier vide </div>
+              ))}
+          {!cart?.filter((c) => c.is_ordered === 0).length && (
+            <div className="flex flex-row text-7xl justify-center my-auto text-redsanta lg:text-9xl lg:mt-16 animate-bounce">
+              {" "}
+              remplis-moi D{" "}
+            </div>
           )}
         </div>
       </div>

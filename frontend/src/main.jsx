@@ -7,12 +7,12 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
 import HomePage from "./pages/HomePage";
 import ProductsPage from "./pages/products/ProductsPage";
-import ManufacturersPage from "./pages/ManufacturersPage";
 import SantaListPage from "./pages/products/SantaListPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import SignUpPage from "./pages/user/SignUpPage";
 import LoginPage from "./pages/user/LogInPage";
 import OrdersPage from "./pages/products/OrdersPage";
+import ExpeditePage from "./pages/products/ExpeditePage";
 
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -40,14 +40,20 @@ const router = createBrowserRouter([
           {
             path: "commandes",
             element: <OrdersPage />,
-            loader: () =>
-              axios.get(`${apiUrl}/api/orders/`).then((res) => res.data),
           },
           {
-            path: "fabricants",
-            element: <ManufacturersPage />,
-            loader: () =>
-              axios.get(`${apiUrl}/api/manufacturers/`).then((res) => res.data),
+            path: "expedition",
+            element: <ExpeditePage />,
+            loader: async () => {
+              try {
+                const response = await axios.get(
+                  `${import.meta.env.VITE_BACKEND_URL}/api/orders/`
+                );
+                return response.data;
+              } catch (e) {
+                return null;
+              }
+            },
           },
         ],
       },

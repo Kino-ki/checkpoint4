@@ -43,7 +43,7 @@ export default function SignUpPage() {
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="font-heading ">
         {/* (((((((((((((((((((((((((((((((((((((((((())))))))))))))             USERNAME              ((((((((((())))))))))))))))))))))))))))))))))))))) */}
-        <div className=" flex flex-col justify-center align-middle gap-5 py-10 mx-[42rem] ">
+        <div className=" flex flex-col justify-center align-middle gap-5 py-10 lg:mx-[42rem] ">
           <div className="flex flex-col ">
             <div className="flex flex-row justify-center">
               <div className="flex flex-col">
@@ -136,9 +136,9 @@ export default function SignUpPage() {
             <button
               type="submit"
               onClick={notify}
-              className="text-2xl hover:font-semibold"
+              className="text-3xl hover:font-semibold "
             >
-              soumsoum
+              VALIDER
             </button>
             {/* <ToastContainer
               position="top-right"

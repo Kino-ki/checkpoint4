@@ -1,6 +1,7 @@
 const express = require("express");
 
 const orderRouter = express.Router();
+const verifyToken = require("../middlewares/auth");
 
 const {
   browse,
@@ -11,7 +12,7 @@ const {
 } = require("../controllers/orderControllers");
 
 orderRouter.get("/", browse);
-orderRouter.get("/:user_id", readByUser);
+orderRouter.get("/user", verifyToken, readByUser);
 
 orderRouter.post("/", add);
 orderRouter.put("/:id", edit);

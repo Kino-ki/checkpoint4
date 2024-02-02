@@ -54,7 +54,7 @@ export default function CreateProduct({ setUpdate }) {
   // ---------------------------------------------------------------------RENDER-------------------------------------
   return (
     <div>
-      <h1 className="font-heading flex flex-row justify-end mr-96 text-3xl mt-3">
+      <h1 className="font-heading flex flex-row lg:justify-end lg:mr-96 text-2xl lg:text-3xl lg:mt-3">
         {" "}
         Tu veux ajouter quelque chose? C'est{" "}
         <button
@@ -65,20 +65,20 @@ export default function CreateProduct({ setUpdate }) {
           ICI
         </button>{" "}
       </h1>
-      <div className="flex flex-row justify-center mt-5 gap-5">
+      <div className="flex flex-col lg:flex-row justify-center lg:mt-5 lg:gap-5">
         {visible && (
           <div>
             <form
-              className="flex flex-row gap-5 font-heading"
+              className="flex flex-col items-center lg:flex-row gap-3 lg:gap-5 font-heading"
               onSubmit={handleSubmit(onSubmit)}
             >
               {/* --------------------------------------------- Product Name -------------------------------------*/}
               <div>
                 <input
-                  className="py-2 text-2xl"
+                  className="lg:py-2 lg:text-2xl rounded-lg"
                   type="text"
                   {...register("name", {
-                    required: "Nom de produit obligatoire",
+                    required: "Nom de produit obligatoire ",
                     minLength: {
                       value: 2,
                       message: "nom doit contenir au  moins deux lettres",
@@ -93,7 +93,7 @@ export default function CreateProduct({ setUpdate }) {
               {/* -------------------------------------------------- Product quantity -------------------------------------*/}
               <div>
                 <input
-                  className="py-2 text-2xl"
+                  className="lg:py-2 lg:text-2xl rounded-lg"
                   type="number"
                   {...register("quantity", {
                     required: "Quantité obligatoire",
@@ -117,7 +117,7 @@ export default function CreateProduct({ setUpdate }) {
               {/* -------------------------------------Product Price -------------------------------------*/}
               <div>
                 <input
-                  className="py-2 text-2xl"
+                  className="lg:py-2 lg:text-2xl rounded-lg"
                   type="number"
                   {...register("price", {
                     required: "prix obligatoire",
@@ -142,16 +142,19 @@ export default function CreateProduct({ setUpdate }) {
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
-                  <select {...field} className="text-2xl">
+                  <select
+                    {...field}
+                    className="lg:py-2 lg:text-2xl rounded-lg mx-auto"
+                  >
                     <option className="" value="all">
                       {" "}
                       ---
                     </option>
                     {manuf &&
                       manuf.map((m) => (
-                        <option className="" value={m.name}>
+                        <option className="" value={m.manuf_name}>
                           {" "}
-                          {m.name}{" "}
+                          {m.manuf_name}{" "}
                         </option>
                       ))}
                   </select>
@@ -163,12 +166,15 @@ export default function CreateProduct({ setUpdate }) {
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
-                  <select {...field} className="text-2xl">
-                    <option className="text-2xl" value="all">
+                  <select
+                    {...field}
+                    className="lg:py-2 lg:text-2xl mx_auto rounded-lg"
+                  >
+                    <option className="lg:text-2xl" value="all">
                       ---
                     </option>
                     {uniquCat.map((categ) => (
-                      <option className="text-2xl" value={categ}>
+                      <option className="lg:text-2xl mx-auto" value={categ}>
                         {" "}
                         {categ}{" "}
                       </option>
@@ -178,7 +184,7 @@ export default function CreateProduct({ setUpdate }) {
               />
               {/* ------------------------------------- submmit -------------------------------------*/}
               <button
-                className=" bg-earthsanta rounded text-yellowsanta text-3xl px-9 shadow-2xl py-5 font-semibold active:bg-redsanta active:shadow-inner"
+                className=" bg-earthsanta rounded text-yellowsanta lg:text-3xl lg:px-9 shadow-2xl lg:py-5 font-semibold active:bg-redsanta active:shadow-inner"
                 type="submit"
               >
                 ajouter

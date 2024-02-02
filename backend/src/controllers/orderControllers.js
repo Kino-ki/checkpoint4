@@ -16,9 +16,9 @@ const browse = async (req, res, next) => {
 };
 
 const readByUser = async (req, res, next) => {
-  const { user_id: userId } = req.params;
+  const { sub } = req.auth;
   try {
-    const order = await tables.orders.readOneOrder(userId);
+    const order = await tables.orders.readOneOrder(sub);
     if (order != null) {
       res.json(order);
     } else {

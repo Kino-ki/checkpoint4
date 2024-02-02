@@ -51,7 +51,7 @@ export default function LoginPage() {
           ref={passwordRef}
           type="password"
           id="password"
-          className="rounded-xl shadow-sm shadow-greensanta lg:w-96  text-2xl lg:hover:w-[30rem] focus:w-80 transition-all ease-in-out"
+          className="rounded-xl shadow-sm shadow-greensanta lg:mt-0 lg:w-96 mt-10 text-2xl lg:hover:w-[30rem] focus:w-80 transition-all ease-in-out"
         />
         <button type="submit" className="text-2xl hover:font-bold">
           ENVOYER
