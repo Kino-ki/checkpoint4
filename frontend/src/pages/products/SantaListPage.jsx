@@ -1,20 +1,35 @@
-import { useLoaderData } from "react-router-dom";
+import { useOutletContext, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import CartCard from "../../components/CartCard";
 
 export default function SantaListPage() {
-  const products = useLoaderData();
-  const [cart, setCart] = useState(products.filter((item) => item.is_fav > 0));
+  const [cart, setCart] = useState();
   const [update, setUpdate] = useState(false);
+  const [mounted, setMounted] = useState(true);
+  const { auth } = useOutletContext();
+  const navigate = useNavigate();
+
   useEffect(() => {
-    if (update) {
-      axios.get("http://localhost:3310/api/products/").then((res) => {
-        setCart(res.data.filter((item) => item.is_fav > 0));
-        setUpdate(false);
-      });
+    if (update || mounted) {
+      if (auth) {
+        axios
+          .get(`${import.meta.env.VITE_BACKEND_URL}/api/carts/usercart`, {
+            headers: {
+              Authorization: `Bearer ${auth?.token}`,
+            },
+          })
+          .then((res) => {
+            setCart(res.data);
+          });
+      } else {
+        navigate("/profil/connexion");
+      }
+
+      setUpdate(false);
+      setMounted(false);
     }
-  }, [update]);
+  }, [update, mounted]);
 
   return (
     <div>
@@ -41,17 +56,25 @@ export default function SantaListPage() {
           <div>quantité</div>
         </div>
         <div className="flex flex-col gap-8">
-          {cart &&
-            cart.map((c) => (
-              <CartCard
-                key={c.id}
-                id={c.id}
-                name={c.name}
-                cartquantity={c.is_fav}
-                stockItems={c.quantity}
-                setUpdate={setUpdate}
-              />
-            ))}
+          {cart?.length ? (
+            cart
+              .filter((c) => c.is_ordered === 0)
+              .map((c) => (
+                <CartCard
+                  key={c.username}
+                  id={c.id}
+                  name={c.product_name}
+                  cartquantity={parseInt(c.cart_quantity, 10)}
+                  stockItems={c.product_quantity}
+                  userId={c.user_id}
+                  prodId={c.product_id}
+                  setUpdate={setUpdate}
+                  update={update}
+                />
+              ))
+          ) : (
+            <div> Panier vide </div>
+          )}
         </div>
       </div>
     </div>

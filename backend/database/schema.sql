@@ -9,6 +9,7 @@ CREATE TABLE cart
   user_id    INT NOT NULL,
   product_id INT NOT NULL,
   quantity  INT NOT NULL DEFAULT 1,
+  is_ordered  INT NOT NULL DEFAULT 0,
   created_at DATETIME NOT NULL DEFAULT NOW(),
   PRIMARY KEY (id)
 );

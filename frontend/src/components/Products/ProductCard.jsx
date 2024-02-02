@@ -1,7 +1,10 @@
 import PropTypes from "prop-types";
-// import { useState, useEffect } from "react";
-// import axios from "axios";
-import { Select } from "flowbite-react";
+import axios from "axios";
+import { Select, Toast } from "flowbite-react";
+import { HiCheck } from "react-icons/hi";
+import { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
+import { arrayRange } from "../../services/Helper";
 
 // ((((((((((((((((((((((((        WORK IN PROGESS (ordering productCard ^^)                     ))))))))))))))))))))))))
 
@@ -11,50 +14,72 @@ export default function ProductCard({
   price,
   category,
   manufactur,
-  // setUpdate,
-  // id,
+  prodId,
+  // setIsUpdated,
+  // isUpdated,
 }) {
-  // --------------------------------------------- handle cart items quantity -------------------------------------------
-  // const [count, setCount] = useState(fav);
-  // const addItemToCart = () => {
-  //   if (quantity > 0) {
-  //     setCount(count + 1);
-  //   }
-  // };
-  // const removeItemFromCart = () => {
-  //   if (fav > 0) {
-  //     setCount(count - 1);
-  //   }
-  // };
-  // ------------------------------------------------------AXIOS EDIT -----------------------------------
+  // --------------------------------------------- handle SELECT items quantity -------------------------------------------
+  const [selectArray, setSelectArray] = useState([]);
+  // const [updateQuantity, setUpdateQuantity] = useState(false);
+  const [toast, setToast] = useState(false);
+  const [quantitySelected, setQuantitySelected] = useState();
+
+  const { auth } = useOutletContext();
+
+  useEffect(() => {
+    let myNum;
+    if (quantity > 15) {
+      myNum = 15;
+    } else {
+      myNum = quantity;
+    }
+    setSelectArray(arrayRange(0, myNum, 1));
+  }, []);
+
+  // --------------------------------------------- handle Cart -------------------------------------------
+  const handleCartQuantity = (e) => {
+    const cartQuantity = e.target.value;
+    setQuantitySelected(cartQuantity);
+  };
+  const handleCartPost = () => {
+    axios
+      .post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/carts`,
+        {
+          product_id: prodId,
+          quantity: parseInt(quantitySelected, 10),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${auth.token}`,
+          },
+        }
+      )
+      .then(() => {
+        setToast(true);
+        // setUpdateQuantity(true); <<<--------------------------------- goes to cart (when validated)
+      });
+  };
+  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< GOES TO CART
   // useEffect(() => {
-  //   axios
-  //     .put(`http://localhost:3310/api/products/${id}`, {
-  //       is_fav: count,
-  //       id,
-  //     })
-  //     .then(() => {
-  //       setUpdate(true);
-  //     });
-  // }, [count])
-
-  const arrayRange = (start, stop, step) =>
-    Array.from(
-      { length: (stop - start) / step + 1 },
-      (value, index) => start + index * step
-    );
-  let myNum;
-  if (quantity > 15) {
-    myNum = 15;
-  } else {
-    myNum = quantity;
-  }
-
-  const selectArray = arrayRange(1, myNum, 1);
+  //   if (updateQuantity) {
+  //     axios
+  //       .put(
+  //         `${import.meta.env.VITE_BACKEND_URL}/api/products/stock/${prodId}`,
+  //         {
+  //           quantity: quantitySelected,
+  //         }
+  //       )
+  //       .then(() => {
+  //         setUpdateQuantity(false);
+  //         setIsUpdated(true);
+  //       });
+  //   }
+  // }, [updateQuantity]);
 
   return (
     // --------------------------------------------Item Informations----------------------------------------
-    <div className="bg-greensanta border-e-8 font-heading border-b-8 border-double border-redsanta text-yellowsanta p-28 py-10 shadow-2xl rounded-2xl">
+    <div className="bg-greensanta flex flex-col justify-start border-e-8 font-heading border-b-8 border-double border-redsanta text-yellowsanta p-10 py-10 shadow-2xl rounded-2xl">
       <div className="text-center font-semibold text-4xl mb-14">{name}</div>
       <div className="flex flex-row justify-between">
         <div className="font-heading text-2xl underline underline-offset-4 decoration-wavy">
@@ -62,19 +87,36 @@ export default function ProductCard({
         </div>
         <div className=" text-4xl font-heading mt-5 ml-28">${price}</div>
       </div>
-      <div className="text-xl mt-10">
-        <div className="font-heading">quantité restante: {quantity}</div>
-        <div className="font-heading">par: {manufactur} </div>
-      </div>
-      {/* ----------------------------------------------CART MANAGER---------------------------------------- */}
-      <Select className="mx-6">
-        {selectArray.map((s) => (
-          <option value={s}> {s}</option>
-        ))}
-      </Select>
-      <div className="flex flex-row justify-between font-heading text-2xl mt-5">
-        {" "}
-        <div className="flex flex-row gap-10">{}</div>
+      <div className="flex flex-row mt-10 justify-between gap-16">
+        <div className="text-xl  flex flex-col">
+          <div className="font-heading">quantité restante: {quantity}</div>
+          <div className="font-heading">par: {manufactur} </div>
+        </div>
+        <div className="flex flex-col mt-3">
+          <Select onChange={handleCartQuantity}>
+            {selectArray.map((s) => (
+              <option key={s} value={s}>
+                {" "}
+                {s}
+              </option>
+            ))}
+          </Select>
+          {/* ----------------------------------------------CART MANAGER---------------------------------------- */}
+          <button
+            type="button"
+            onClick={handleCartPost}
+            className="mt-4 text-lg hover:font-semibold font-extralight shadow-sm shadow-earthsanta border-earthsanta border border-double rounded-lg px-2"
+          >
+            ajouter au panier
+          </button>
+          {toast && (
+            <Toast className="mr-4 shadow-xl">
+              <HiCheck className="inline-flex shrink-0 items-center justify-center rounded-lg text-orange-500 dark:bg-orange-700 dark:text-orange-200" />
+              <div className="font-heading text-xl"> Produit ajouté </div>
+              <Toast.Toggle />
+            </Toast>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -86,7 +128,7 @@ ProductCard.propTypes = {
   price: PropTypes.number.isRequired,
   manufactur: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
-  // fav: PropTypes.number.isRequired,
-  // setUpdate: PropTypes.func.isRequired,
-  // id: PropTypes.number.isRequired,
+  prodId: PropTypes.number.isRequired,
+  // setIsUpdated: PropTypes.func.isRequired,
+  // isUpdated: PropTypes.bool.isRequired,
 };

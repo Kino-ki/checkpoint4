@@ -1,11 +1,13 @@
 const tables = require("../tables");
 
 const handleStock = async (req, res, next) => {
-  const { is_fav: IsFav, id } = req.body;
   try {
-    const productdata = await tables.product.readAll();
-    req.quantity =
-      productdata[id - 1].quantity - (IsFav - productdata[id - 1].is_fav);
+    const { quantity } = req.body;
+    const { id } = req.params;
+
+    const productdata = await tables.product.readWithId(id);
+    req.body.updatedQuantity = productdata.quantity - quantity;
+
     next();
   } catch (e) {
     next(e);

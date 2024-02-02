@@ -1,40 +1,11 @@
 import { NavLink } from "react-router-dom";
 import Snowfall from "react-snowfall";
+import PropTypes from "prop-types";
+import { NavManager } from "../services/Helper";
 import logo from "../assets/logos/logo7.png";
 
-export default function NavBar() {
-  const navlinks = [
-    {
-      id: 1,
-      path: "/produits",
-      title: "produits",
-    },
-    {
-      id: 2,
-      path: "/produits/fabricants",
-      title: "fabricants",
-    },
-    {
-      id: 3,
-      path: "/produits/listenoel",
-      title: "N liste du pere noel N",
-    },
-    {
-      id: 4,
-      path: "/produits/commandes",
-      title: "N commandes N",
-    },
-    {
-      id: 5,
-      path: "/profil/inscription",
-      title: "inscription",
-    },
-    {
-      id: 6,
-      path: "/profil/connexion",
-      title: "connexion",
-    },
-  ];
+export default function NavBar({ auth }) {
+  const navlinks = NavManager(auth?.updatedUser);
   return (
     <nav className="bg-greensanta rounded-xl shadow-2xl border-s-8 border-e-8 border-double border-redsanta mx-2 mt-1">
       <ul className="text-yellowsanta lg:mx-6 lg:text-3xl flex flex-row justify-between">
@@ -48,16 +19,17 @@ export default function NavBar() {
           la hotte du pere noel{" "}
         </span>
         <div className="flex flex-row gap-12">
-          {navlinks.map((n) => (
-            <li key={n.id}>
-              <NavLink
-                className="hover:text-redsanta active:text-earthsanta"
-                to={n.path}
-              >
-                {n.title}
-              </NavLink>
-            </li>
-          ))}
+          {navlinks &&
+            navlinks?.map((n) => (
+              <li key={n.id}>
+                <NavLink
+                  className="hover:text-redsanta active:text-earthsanta"
+                  to={n.path}
+                >
+                  {n.title}
+                </NavLink>
+              </li>
+            ))}
         </div>
       </ul>
       <Snowfall
@@ -68,3 +40,7 @@ export default function NavBar() {
     </nav>
   );
 }
+
+NavBar.propTypes = {
+  auth: PropTypes.shape().isRequired,
+};

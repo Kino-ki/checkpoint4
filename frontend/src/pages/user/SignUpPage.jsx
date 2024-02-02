@@ -23,7 +23,7 @@ export default function SignUpPage() {
   const onSubmit = (data) => {
     axios
       .post(`${import.meta.env.VITE_BACKEND_URL}/api/users`, data)
-      .then(navigate("/user/login"));
+      .then(navigate("/profil/connexion"));
   };
 
   return (

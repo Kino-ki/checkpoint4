@@ -22,7 +22,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className=" border-redsanta">
+    <div className=" border-redsanta flex-flex-col">
       <div className=" flex flex-row justify-center text-7xl font-semibold my-6">
         <div className=" flex flex-row justify-center text-7xl  my-6">
           <p className="hover:animate-ping hover:text-greensanta">c</p>{" "}
@@ -36,29 +36,27 @@ export default function LoginPage() {
           <p className="hover:animate-ping hover:text-greensanta">n</p>
         </div>
       </div>
-      <div className=" border-b-4 border-t-4 border-double border-redsanta lg:mx-[30rem]">
-        <form
-          className="font-heading flex flex-col justify-center lg:gap-6 py-11 lg:mx-[11rem]"
-          onSubmit={handleSubmit}
-        >
-          <input
-            ref={emailRef}
-            type="email"
-            id="email"
-            placeholder="EMAIL"
-            className="rounded-xl  shadow-sm shadow-greensanta text-2xl"
-          />
-          <input
-            ref={passwordRef}
-            type="password"
-            id="password"
-            className="rounded-xl shadow-sm shadow-greensanta text-2xl"
-          />
-          <button type="submit" className="text-2xl hover:font-bold">
-            ENVOYER
-          </button>
-        </form>
-      </div>
+      <form
+        className="font-heading flex flex-col justify-center lg:gap-6 py-11 items-center"
+        onSubmit={handleSubmit}
+      >
+        <input
+          ref={emailRef}
+          type="email"
+          id="email"
+          placeholder="EMAIL"
+          className="rounded-xl  shadow-sm shadow-greensanta lg:w-96  text-2xl lg:hover:w-[30rem] focus:w-80 transition-all ease-in-out"
+        />
+        <input
+          ref={passwordRef}
+          type="password"
+          id="password"
+          className="rounded-xl shadow-sm shadow-greensanta lg:w-96  text-2xl lg:hover:w-[30rem] focus:w-80 transition-all ease-in-out"
+        />
+        <button type="submit" className="text-2xl hover:font-bold">
+          ENVOYER
+        </button>
+      </form>
     </div>
   );
 }

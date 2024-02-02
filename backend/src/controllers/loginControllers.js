@@ -23,11 +23,17 @@ const login = async (req, res, next) => {
         process.env.APP_SECRET,
         { expiresIn: "5h" }
       );
-      delete user.id;
-      delete user.created_at;
-      delete user.is_admin;
+      const {
+        id,
+        created_at: createdAt,
+        firstname,
+        lastname,
+        adress,
+        ...rest
+      } = user;
+      const updatedUser = { ...rest };
 
-      res.json({ user, token });
+      res.json({ updatedUser, token });
     } else {
       res.sendStatus(422);
     }

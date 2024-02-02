@@ -16,9 +16,9 @@ const browse = async (req, res, next) => {
 };
 
 const readByUser = async (req, res, next) => {
-  const { user_id: userId } = req.params;
   try {
-    const cart = await tables.cart.readOneCart(userId);
+    const { sub } = req.auth;
+    const cart = await tables.cart.readOneCart(sub);
     if (cart != null) {
       res.json(cart);
     } else {
@@ -32,16 +32,61 @@ const readByUser = async (req, res, next) => {
 };
 
 const add = async (req, res, next) => {
-  const { user_id: userId, product_id: productId, quantity } = req.body;
   try {
-    const result = await tables.cart.create(userId, productId, quantity);
-    if (result.affectedRows !== 0) {
-      res.status(201).json({
-        message: `nouveau panier créé`,
+    const { sub } = req.auth;
+    const { product_id: prodId, quantity, exists, newQuantity } = req.body;
+    if (!exists) {
+      const result = await tables.cart.create(
+        parseInt(sub, 10),
+        parseInt(prodId, 10),
+        parseInt(quantity, 10)
+      );
+      if (result.affectedRows !== 0) {
+        res.status(201).json({
+          message: `nouveau panier créé`,
+        });
+      } else {
+        res.status(404).json({
+          message: "oops! no creation, check your inputs",
+        });
+      }
+    } else {
+      const result = await tables.cart.update(
+        parseInt(newQuantity, 10),
+        parseInt(prodId, 10),
+        parseInt(sub, 10)
+      );
+      if (result.changedRows !== 0) {
+        res.status(200).json({
+          message: "quantité modifiée",
+        });
+      } else {
+        res.status(404).json({
+          message: "No modification, check your data",
+        });
+      }
+    }
+  } catch (e) {
+    next(e);
+  }
+};
+const editToOrder = async (req, res, next) => {
+  try {
+    const { is_ordered: isOrdered } = req.body;
+    const { product_id: prodId } = req.params;
+    const { sub } = req.auth;
+    const result = await tables.cart.setOrder(
+      parseInt(isOrdered, 10),
+      parseInt(prodId, 10),
+      parseInt(sub, 10)
+    );
+    if (result.changedRows !== 0) {
+      res.status(200).json({
+        message: "quantité modifiée",
       });
     } else {
       res.status(404).json({
-        message: "oops! no creation, check your inputs",
+        message: "No modification, check your data",
       });
     }
   } catch (e) {
@@ -51,9 +96,14 @@ const add = async (req, res, next) => {
 
 const edit = async (req, res, next) => {
   const { quantity } = req.body;
-  const { id } = req.params;
+  const { product_id: prodId } = req.params;
+  const { sub } = req.auth;
   try {
-    const result = await tables.cart.update(quantity, id);
+    const result = await tables.cart.update(
+      parseInt(quantity, 10),
+      parseInt(prodId, 10),
+      parseInt(sub, 10)
+    );
     if (result.changedRows !== 0) {
       res.status(200).json({
         message: "quantité modifiée",
@@ -69,12 +119,13 @@ const edit = async (req, res, next) => {
 };
 
 const destroy = async (req, res, next) => {
-  const { id } = req.params;
+  const { product_id: prodId } = req.params;
+  const { sub } = req.auth;
   try {
-    const result = await tables.cart.delete(id);
+    const result = await tables.cart.delete(prodId, sub);
     if (result.affectedRows !== 0) {
       res.json({
-        message: `Deleted entry ${id}`,
+        message: `product ${prodId} removed from cart`,
       });
     } else {
       res.status(404).json({
@@ -86,4 +137,4 @@ const destroy = async (req, res, next) => {
   }
 };
 
-module.exports = { browse, readByUser, add, edit, destroy };
+module.exports = { browse, readByUser, add, editToOrder, edit, destroy };
