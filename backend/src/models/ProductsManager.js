@@ -19,12 +19,20 @@ class ProductsManager extends AbstractManager {
     return rows;
   }
 
-  async read(manufacturerId) {
+  async readWithManuf(manufacturerId) {
     const [rows] = await this.database.query(
       `SELECT product_name FROM ${this.table} where manufacturer_id= ?`,
       [manufacturerId]
     );
     return rows;
+  }
+
+  async readWithId(id) {
+    const [rows] = await this.database.query(
+      `SELECT quantity FROM ${this.table} where id= ?`,
+      [id]
+    );
+    return rows[0];
   }
 
   async update(quantity, id) {

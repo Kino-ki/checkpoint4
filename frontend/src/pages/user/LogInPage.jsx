@@ -45,13 +45,13 @@ export default function LoginPage() {
           type="email"
           id="email"
           placeholder="EMAIL"
-          className="rounded-xl  shadow-sm shadow-greensanta lg:w-72  text-2xl lg:hover:w-80 focus:w-80 transition-all ease-in-out"
+          className="rounded-xl  shadow-sm shadow-greensanta lg:w-96  text-2xl lg:hover:w-[30rem] focus:w-80 transition-all ease-in-out"
         />
         <input
           ref={passwordRef}
           type="password"
           id="password"
-          className="rounded-xl shadow-sm shadow-greensanta lg:w-72  text-2xl lg:hover:w-80 focus:w-80 transition-all ease-in-out"
+          className="rounded-xl shadow-sm shadow-greensanta lg:w-96  text-2xl lg:hover:w-[30rem] focus:w-80 transition-all ease-in-out"
         />
         <button type="submit" className="text-2xl hover:font-bold">
           ENVOYER

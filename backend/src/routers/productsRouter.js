@@ -4,19 +4,21 @@ const productsRouter = express.Router();
 
 const {
   browse,
-  read,
+  readById,
+  readByManuf,
   editStock,
   remove,
   add,
 } = require("../controllers/productsController");
 const foreignKey = require("../middlewares/productForeignKeysMiddlewares");
 const categoryId = require("../middlewares/categoryIdMiddleware");
-// const handleStock = require("../middlewares/handleStockMiddleware");
+const handleStock = require("../middlewares/handleStockMiddleware");
 
 productsRouter.get("/", browse);
-productsRouter.get("/:manufacturer_id", read);
+productsRouter.get("/:id", readById);
+productsRouter.get("/:manufacturer_id", readByManuf);
 
-productsRouter.put("/stock/:id", editStock);
+productsRouter.put("/stock/:id", handleStock, editStock);
 productsRouter.post("/", foreignKey, categoryId, add);
 
 productsRouter.delete("/:id", remove);

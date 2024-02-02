@@ -13,14 +13,14 @@ function NavManager(user) {
         title: "fabricants",
       },
       {
-        id: 4,
-        path: "/produits/commandes",
-        title: "N commandes N",
-      },
-      {
         id: 3,
         path: "/produits/listenoel",
         title: "N liste du pere noel N",
+      },
+      {
+        id: 4,
+        path: "/produits/commandes",
+        title: "N mes commandes N",
       },
     ];
   }

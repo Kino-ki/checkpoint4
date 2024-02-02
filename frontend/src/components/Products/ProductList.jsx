@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useNavigate } from "react-router-dom";
 import { TextInput, Select, RangeSlider, Label } from "flowbite-react";
 import ProductCard from "./ProductCard";
 import CreateProduct from "./CreateProduct";
@@ -13,18 +13,20 @@ export default function ProductList({ dbproducts }) {
   const [manuf, setManuf] = useState();
   const [categ, setCateg] = useState();
   const [userData, setUserData] = useState();
+  const [isUpdated, setIsUpdated] = useState(false);
+
   const { auth } = useOutletContext();
+  const navigate = useNavigate();
 
   // -------------------------------------------------------[AXIOS POST]Automatic update when query ----------------------------------------
-  const [update, setUpdate] = useState(false);
   useEffect(() => {
-    if (update) {
+    if (isUpdated) {
       axios.get("http://localhost:3310/api/products/").then((res) => {
         setFilteredProducts(res.data);
-        setUpdate(false);
+        setIsUpdated(false);
       });
     }
-  }, [update]);
+  }, [isUpdated]);
   // --------------------------------------------------------- OnClick Function -----------------------
   const [visible, setVisible] = useState(false);
   const HandleClick = () => {
@@ -32,16 +34,17 @@ export default function ProductList({ dbproducts }) {
   };
   // ------------------------------------------------ [FILTERS INPUT] GET cactegories & manufacturers ------------------------------------
   useEffect(() => {
+    if (!auth) {
+      navigate("/profil/connexion");
+    }
     axios.get("http://localhost:3310/api/manufacturers").then((res) => {
       setManuf(res.data);
     });
-  }, []);
-  useEffect(() => {
+
     axios.get("http://localhost:3310/api/categories").then((res) => {
       setCateg(res.data);
     });
-  }, []);
-  useEffect(() => {
+
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/api/users/profile`, {
         headers: {
@@ -181,13 +184,13 @@ export default function ProductList({ dbproducts }) {
         )}
       </div>
       {/* ---------------------------------------- CREATE PRODUCT COMPONENT----------------------------------------- */}
-      <CreateProduct setUpdate={setUpdate} />
+      <CreateProduct setIsUpdated={setIsUpdated} />
       {/* ---------------------------------------- MAP DATA AND LIST ----------------------------------------- */}
       <div className="flex flex-wrap justify-center p-10 gap-14">
         {filteredProducts.length ? (
           filteredProducts.map((p) => (
             <ProductCard
-              setUpdate={setUpdate}
+              setIsUpdated={setIsUpdated}
               key={p.id}
               prodId={p.id}
               name={p.product_name}
@@ -196,6 +199,7 @@ export default function ProductList({ dbproducts }) {
               category={p.category}
               userId={userData?.id}
               manufactur={p.manufacturer}
+              isUpdated={isUpdated}
             />
           ))
         ) : (

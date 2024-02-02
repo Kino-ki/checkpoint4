@@ -15,10 +15,12 @@ export default function ProductCard({
   category,
   manufactur,
   prodId,
+  // setIsUpdated,
+  // isUpdated,
 }) {
   // --------------------------------------------- handle SELECT items quantity -------------------------------------------
   const [selectArray, setSelectArray] = useState([]);
-  const [updateQuantity, setUpdateQuantity] = useState(false);
+  // const [updateQuantity, setUpdateQuantity] = useState(false);
   const [toast, setToast] = useState(false);
   const [quantitySelected, setQuantitySelected] = useState();
 
@@ -31,7 +33,7 @@ export default function ProductCard({
     } else {
       myNum = quantity;
     }
-    setSelectArray(arrayRange(1, myNum, 1));
+    setSelectArray(arrayRange(0, myNum, 1));
   }, []);
 
   // --------------------------------------------- handle Cart -------------------------------------------
@@ -45,7 +47,7 @@ export default function ProductCard({
         `${import.meta.env.VITE_BACKEND_URL}/api/carts`,
         {
           product_id: prodId,
-          quantity: quantitySelected,
+          quantity: parseInt(quantitySelected, 10),
         },
         {
           headers: {
@@ -55,18 +57,25 @@ export default function ProductCard({
       )
       .then(() => {
         setToast(true);
-        setUpdateQuantity(true);
+        // setUpdateQuantity(true); <<<--------------------------------- goes to cart (when validated)
       });
   };
-
-  useEffect(() => {
-    if (updateQuantity) {
-      axios.put(`${import.meta.env.VITE_URL_BACKEND}/products/${prodId}`, {
-        quantitySelected,
-        prodId,
-      });
-    }
-  }, [updateQuantity]);
+  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< GOES TO CART
+  // useEffect(() => {
+  //   if (updateQuantity) {
+  //     axios
+  //       .put(
+  //         `${import.meta.env.VITE_BACKEND_URL}/api/products/stock/${prodId}`,
+  //         {
+  //           quantity: quantitySelected,
+  //         }
+  //       )
+  //       .then(() => {
+  //         setUpdateQuantity(false);
+  //         setIsUpdated(true);
+  //       });
+  //   }
+  // }, [updateQuantity]);
 
   return (
     // --------------------------------------------Item Informations----------------------------------------
@@ -102,7 +111,7 @@ export default function ProductCard({
           </button>
           {toast && (
             <Toast className="mr-4 shadow-xl">
-              <HiCheck className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-orange-500 dark:bg-orange-700 dark:text-orange-200" />
+              <HiCheck className="inline-flex shrink-0 items-center justify-center rounded-lg text-orange-500 dark:bg-orange-700 dark:text-orange-200" />
               <div className="font-heading text-xl"> Produit ajouté </div>
               <Toast.Toggle />
             </Toast>
@@ -120,4 +129,6 @@ ProductCard.propTypes = {
   manufactur: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
   prodId: PropTypes.number.isRequired,
+  // setIsUpdated: PropTypes.func.isRequired,
+  // isUpdated: PropTypes.bool.isRequired,
 };

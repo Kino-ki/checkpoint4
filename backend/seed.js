@@ -50,29 +50,29 @@ const seed = async () => {
       );
     }
 
-    for (let i = 0; i < 10; i += 1) {
-      queries.push(
-        database.query(
-          `INSERT INTO cart (user_id, product_id) VALUES (? , ?)`,
-          [
-            faker.number.int({ min: 1, max: 5 }),
-            faker.number.int({ min: 1, max: 10 }),
-          ]
-        )
-      );
-    }
-    for (let i = 0; i < 10; i += 1) {
-      queries.push(
-        database.query(
-          `INSERT INTO orders (user_id, cart_id, product_id) VALUES (? ,?, ?)`,
-          [
-            faker.number.int({ min: 1, max: 5 }),
-            faker.number.int({ min: 1, max: 10 }),
-            faker.number.int({ min: 1, max: 10 }),
-          ]
-        )
-      );
-    }
+    // for (let i = 0; i < 10; i += 1) {
+    //   queries.push(
+    //     database.query(
+    //       `INSERT INTO cart (user_id, product_id) VALUES (? , ?)`,
+    //       [
+    //         faker.number.int({ min: 1, max: 5 }),
+    //         faker.number.int({ min: 1, max: 10 }),
+    //       ]
+    //     )
+    //   );
+    // }
+    // for (let i = 0; i < 10; i += 1) {
+    //   queries.push(
+    //     database.query(
+    //       `INSERT INTO orders (user_id, cart_id, product_id) VALUES (? ,?, ?)`,
+    //       [
+    //         faker.number.int({ min: 1, max: 5 }),
+    //         faker.number.int({ min: 1, max: 10 }),
+    //         faker.number.int({ min: 1, max: 10 }),
+    //       ]
+    //     )
+    //   );
+    // }
     /* ************************************************************************* */
 
     // Wait for all the insertion queries to complete

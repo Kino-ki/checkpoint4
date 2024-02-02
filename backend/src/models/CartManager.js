@@ -19,12 +19,12 @@ class CartManager extends AbstractManager {
 
   async readOneCart(sub) {
     const [rows] = await this.database.query(
-      `SELECT u.username, p.product_name, SUM(c.quantity) AS qantity, SUM(p.price) AS total_price
+      `SELECT u.username, p.product_name,c.id, p.id AS product_id, u.id AS user_id, c.is_ordered ,p.quantity AS product_quantity, SUM(c.quantity) AS cart_quantity, SUM(p.price) AS total_price
       FROM ${this.table} AS c
       JOIN user AS u ON c.user_id=u.id
       JOIN product AS p ON c.product_id=p.id
       WHERE c.user_id=?
-      GROUP BY u.username, p.product_name`,
+      GROUP BY p.product_name,  p.quantity,  u.username, c.id, c.is_ordered `,
       [sub]
     );
     return rows;
@@ -38,18 +38,26 @@ class CartManager extends AbstractManager {
     return result;
   }
 
-  async update(quantity, id) {
+  async setOrder(isOrdered, prodId, sub) {
     const result = await this.database.query(
-      `UPDATE ${this.table} SET quantity = ? WHERE id=?`,
-      [quantity, id]
+      `UPDATE ${this.table} SET is_ordered = ? WHERE product_id= ? AND user_id=?`,
+      [isOrdered, prodId, sub]
     );
     return result;
   }
 
-  async delete(id) {
+  async update(quantity, prodId, sub) {
+    const result = await this.database.query(
+      `UPDATE ${this.table} SET quantity = ? WHERE product_id= ? AND user_id=?`,
+      [quantity, prodId, sub]
+    );
+    return result;
+  }
+
+  async delete(prodId, sub) {
     const [result] = await this.database.query(
-      `DELETE FROM ${this.table} WHERE id=?`,
-      [id]
+      `DELETE FROM ${this.table} WHERE product_id=? AND user_id=?`,
+      [prodId, sub]
     );
     return result;
   }

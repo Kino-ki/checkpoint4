@@ -34,7 +34,7 @@ class OrdersManager extends AbstractManager {
 
   async create(userId, cartId, prodId) {
     const result = await this.database.query(
-      `INSERT INTO ${this.table} (user_id, cart_id, product_id) VALUES (? , ?)`,
+      `INSERT INTO ${this.table} (user_id, cart_id, product_id) VALUES (? , ?, ?)`,
       [userId, cartId, prodId]
     );
     return result;
