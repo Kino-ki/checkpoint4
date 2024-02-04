@@ -4,7 +4,7 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 
-export default function CreateProduct({ setUpdate }) {
+export default function CreateProduct({ setIsUpdated }) {
   // -----------------------------------------------------------define the form--------------------------------------
   const {
     register,
@@ -42,12 +42,11 @@ export default function CreateProduct({ setUpdate }) {
         name: data.name,
         quantity: data.quantity,
         price: data.price,
-        is_fav: 0,
         manufacturer: data.manufacturer,
         category: data.category,
       })
       .then(() => {
-        setUpdate(true);
+        setIsUpdated(true);
         setVisible(!visible);
       });
   };
@@ -69,7 +68,7 @@ export default function CreateProduct({ setUpdate }) {
         {visible && (
           <div>
             <form
-              className="flex flex-col items-center lg:flex-row gap-3 lg:gap-5 font-heading"
+              className="flex flex-col items-center lg:flex-row gap-3 lg:gap-5 font-heading relative"
               onSubmit={handleSubmit(onSubmit)}
             >
               {/* --------------------------------------------- Product Name -------------------------------------*/}
@@ -184,7 +183,7 @@ export default function CreateProduct({ setUpdate }) {
               />
               {/* ------------------------------------- submmit -------------------------------------*/}
               <button
-                className=" bg-earthsanta rounded text-yellowsanta lg:text-3xl lg:px-9 shadow-2xl lg:py-5 font-semibold active:bg-redsanta active:shadow-inner"
+                className=" bg-earthsanta rounded-lg text-yellowsanta lg:text-3xl lg:px-9 shadow-2xl lg:py-2 font-semibold active:bg-redsanta active:shadow-inner"
                 type="submit"
               >
                 ajouter
@@ -198,5 +197,5 @@ export default function CreateProduct({ setUpdate }) {
 }
 
 CreateProduct.propTypes = {
-  setUpdate: PropTypes.bool.isRequired,
+  setIsUpdated: PropTypes.bool.isRequired,
 };

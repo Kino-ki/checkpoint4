@@ -60,11 +60,11 @@ const editStock = async (req, res) => {
 };
 
 const add = async (req, res, next) => {
-  const { product_name: name, quantity, price } = req.body;
-  const manufacturerId = req.manufacturer_id;
-  const CategoryId = req.category_id;
-
   try {
+    const { name, quantity, price } = req.body;
+    const manufacturerId = req.manufacturer_id;
+    const CategoryId = req.category_id;
+
     const result = await tables.product.create(
       name,
       quantity,

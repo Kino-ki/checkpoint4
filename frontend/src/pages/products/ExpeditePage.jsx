@@ -16,14 +16,15 @@ export default function ExpeditePage() {
       .then((res) => setOrders(res.data));
   }, []);
   return (
-    <div className="flex flex-wrap gap-10 p-10">
+    <div className="flex lg:flex-wrap flex-col justify-center w-full">
       {orders?.map((o) => (
         <ExpediteCard
           adress={o.adress}
           firstname={o.firstname}
           lastname={o.lastname}
-          product={o.product_name}
-          quantity={o.quantity}
+          product={o.products}
+          quantity={o.quantities}
+          price={o.price}
         />
       ))}
     </div>

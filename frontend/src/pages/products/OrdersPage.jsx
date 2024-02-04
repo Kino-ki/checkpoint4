@@ -7,7 +7,6 @@ export default function OrdersPage() {
   const { auth } = useOutletContext();
   const navigate = useNavigate();
   const [order, setOrder] = useState();
-
   useEffect(() => {
     if (!auth) {
       navigate("/produits");
@@ -53,7 +52,7 @@ export default function OrdersPage() {
             <OrderCard
               prodName={o.product_name}
               quantity={o.quantity}
-              price={o.total_price}
+              price={o.price}
             />
           ))
         ) : (

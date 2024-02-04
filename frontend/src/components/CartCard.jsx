@@ -100,6 +100,9 @@ export default function CartCard({
         .then(() => navigate("/produits/commandes"));
     }
   });
+  setTimeout(() => {
+    setToast(false);
+  }, "4000");
 
   return (
     <div className="lg:bg-redsanta bg-[#99324c] rounded-2xl py-3 shadow-2xl">
@@ -109,9 +112,9 @@ export default function CartCard({
         </div>
         <div className="flex flex-row justify-end">
           {toast && (
-            <Toast className="mr-4 shadow-xl">
+            <Toast className="mx-4 w-48 h-16 shadow-xl">
               <HiExclamation className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-orange-500 dark:bg-orange-700 dark:text-orange-200" />
-              <div className="font-heading text-xl"> y-en-a plus</div>
+              <div className="font-heading "> y-en-a plus!</div>
               <Toast.Toggle />
             </Toast>
           )}
@@ -173,12 +176,12 @@ export default function CartCard({
           </Button>
           <Button
             type="button"
-            className={`font-heading font-semibold ml-4 h-10 outline
+            className={`font-heading font-semibold w-32 ml-4 h-10 outline
             ${!updateStock ? "hidden" : "visible"}
             outline-earthsanta bg-greensanta mt-4`}
             onClick={handleStockItems}
           >
-            <p className="text-3xl">Je valide</p>
+            <p className="text-xl">Je valide</p>
           </Button>
         </div>
       </div>

@@ -7,12 +7,12 @@ class OrdersManager extends AbstractManager {
 
   async readAllOrders() {
     const [rows] = await this.database.query(`
-    SELECT u.firstname, u.lastname, u.adress, p.product_name, SUM(c.quantity) as quantity, SUM(p.price) AS total_price
+    SELECT u.id, u.firstname, u.lastname, u.adress, GROUP_CONCAT(p.product_name) as products, GROUP_CONCAT(c.quantity) as quantities, GROUP_CONCAT(p.price) AS price
     FROM ${this.table} AS o
-    JOIN user AS u ON o.user_id = u.id 
-    JOIN product AS p ON p.id = o.product_id
-    JOIN cart AS c ON c.id = o.cart_id
-    GROUP BY u.firstname, u.lastname, u.adress, p.product_name
+    LEFT JOIN user AS u ON o.user_id=u.id
+    LEFT JOIN product AS p ON o.product_id=p.id
+    LEFT JOIN cart AS c ON c.id=o.cart_id
+    GROUP BY u.id
     ORDER BY u.firstname, u.lastname ASC
     `);
     return rows;
@@ -20,13 +20,13 @@ class OrdersManager extends AbstractManager {
 
   async readOneOrder(sub) {
     const [rows] = await this.database.query(
-      `SELECT u.firstname, u.lastname, u.adress, p.product_name, SUM(c.quantity) as quantity, SUM(p.price) AS total_price
+      `SELECT u.firstname, u.lastname, u.adress, p.product_name, SUM(c.quantity) as quantity, (p.price) AS price
       FROM ${this.table} AS o
       JOIN user AS u ON o.user_id = u.id 
       JOIN product AS p ON p.id = o.product_id
       JOIN cart AS c ON c.id = o.cart_id
       WHERE o.user_id= ?
-      GROUP BY u.firstname, u.lastname, u.adress, p.product_name`,
+      GROUP BY u.firstname, u.lastname, u.adress, p.product_name, p.price`,
       [sub]
     );
     return rows;

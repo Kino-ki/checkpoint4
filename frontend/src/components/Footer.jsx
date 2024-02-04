@@ -13,7 +13,7 @@ export default function Footer({ auth }) {
       <div>
         <button
           type="button"
-          className="text-9xl hover:animate-spin rouded-full mx-auto fixed right-6 bottom-8  "
+          className="text-9xl rouded-full mx-auto fixed right-6 bottom-8  "
           onClick={() => setOpenNav(!openNav)}
         >
           {" "}

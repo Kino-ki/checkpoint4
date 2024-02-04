@@ -23,7 +23,7 @@ class CartManager extends AbstractManager {
       FROM ${this.table} AS c
       JOIN user AS u ON c.user_id=u.id
       JOIN product AS p ON c.product_id=p.id
-      WHERE c.user_id=?
+      WHERE c.user_id=? AND is_ordered=0
       GROUP BY p.product_name,  p.quantity,  u.username, c.id, c.is_ordered `,
       [sub]
     );

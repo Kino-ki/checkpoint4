@@ -57,21 +57,19 @@ export default function SantaListPage() {
         </div>
         <div className="flex flex-col gap-8">
           {cart?.length &&
-            cart
-              .filter((c) => c.is_ordered === 0)
-              .map((c) => (
-                <CartCard
-                  key={c.product_id}
-                  id={c.id}
-                  name={c.product_name}
-                  cartquantity={parseInt(c.cart_quantity, 10)}
-                  stockItems={c.product_quantity}
-                  userId={c.user_id}
-                  prodId={c.product_id}
-                  setUpdate={setUpdate}
-                  update={update}
-                />
-              ))}
+            cart.map((c) => (
+              <CartCard
+                key={c.product_id}
+                id={c.id}
+                name={c.product_name}
+                cartquantity={parseInt(c.cart_quantity, 10)}
+                stockItems={c.product_quantity}
+                userId={c.user_id}
+                prodId={c.product_id}
+                setUpdate={setUpdate}
+                update={update}
+              />
+            ))}
           {!cart?.filter((c) => c.is_ordered === 0).length && (
             <div className="flex flex-row text-7xl justify-center my-auto text-redsanta lg:text-9xl lg:mt-16 animate-bounce">
               {" "}
