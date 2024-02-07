@@ -16,6 +16,7 @@ router.use("/carts", cartRouter);
 router.use("/orders", orderRouter);
 router.use("/users", userRouter);
 router.use("/products", productsRouter);
+// router.use("/checkout", checkoutRouter)
 router.use("/categories", categoriesRouter);
 router.use("/manufacturers", manufacturerRouter);
 /* ************************************************************************* */
